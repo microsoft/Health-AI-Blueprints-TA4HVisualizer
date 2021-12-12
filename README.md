@@ -8,7 +8,8 @@ Use the Visualizer tool to extract insights from unstructured medical text. With
 * What percentage of women are diagnosed with X, Y and have symptoms Z or W?
 * The top 5 symptoms our doctors treat with medication X
 * Which examinations are most common and what are their medical codes?
-
+ 
+ <br><br>
 
 **Dashboard**
 ![Sample Dashboard](https://github.com/pazinio/Health-AI-Blueprints-TA4HVisualizer/blob/main/img11.png)
