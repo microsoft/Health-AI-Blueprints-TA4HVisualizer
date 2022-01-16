@@ -20,4 +20,13 @@ Health care providers can use it to answer these questions and more:
 ![Sample Dashboard](https://github.com/pazinio/Health-AI-Blueprints-TA4HVisualizer/blob/main/img11.png)
 
 
+**Links**:
+
+TA4H:
+https://docs.microsoft.com/en-us/azure/cognitive-services/language-service/text-analytics-for-health/overview
+
+PBIX publishing:
+https://docs.microsoft.com/en-us/rest/api/power-bi/
+https://community.powerbi.com/t5/Service/publish-via-git/m-p/101224
+
 

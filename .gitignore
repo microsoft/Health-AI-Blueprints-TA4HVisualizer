@@ -1,3 +1,6 @@
+#local app service env
+blob-storage-connector/env.sh
+
 # Logs
 logs
 *.log
