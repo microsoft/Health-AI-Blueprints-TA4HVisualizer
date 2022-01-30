@@ -19,8 +19,8 @@ Health care providers can use it to answer these questions and more:
 **Dashboard**
 ![Sample Dashboard](https://github.com/pazinio/Health-AI-Blueprints-TA4HVisualizer/blob/main/img11.png)
 
-**Deploy Visualizer to Azure**
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https%3A%2F%2Fraw.githubusercontent.com%2Fpazinio%2FHealth-AI-Blueprints-TA4HVisualizer%2Fmain%2Fazuredeploy.json)
+**Deploy Visualizer to Azure2**
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fpazinio%2FHealth-AI-Blueprints-TA4HVisualizer%2Fmain%2Fazuredeploy.json)
 
 **Links**:
 TA4H:
