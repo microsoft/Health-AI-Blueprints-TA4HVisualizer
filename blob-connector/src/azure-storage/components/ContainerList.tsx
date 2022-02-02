@@ -22,7 +22,7 @@ const ContainerList: React.FC = () => {
       {/* <h3>Containers</h3> */}
       {items.filter(item => item.name === 'medical-texts-input').map((item, i) => (
         <div key={i}>          
-          {item.name.replace('i', 'I')} 
+          {item.name}
            <button onClick={() => onContainerClick(item.name)}>View/Upload</button>
         </div>
       ))}
