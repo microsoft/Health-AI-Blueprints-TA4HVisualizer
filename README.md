@@ -10,7 +10,11 @@ Health care providers can use it to answer these questions and more:
 * The three most common pathways for patients diagnosed with X 3 months before being treated by Y
 * What are the most common examinations and what are their medical codes?
  
- <br><br>
+ <br>
+
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fpazinio%2FHealth-AI-Blueprints-TA4HVisualizer%2Fmain%2Fazuredeploy.json)
+
+ <br>
 
 **Architecture**
 ![Architecture](https://github.com/pazinio/Health-AI-Blueprints-TA4HVisualizer/blob/main/img12.png)
@@ -18,9 +22,6 @@ Health care providers can use it to answer these questions and more:
 
 **Dashboard**
 ![Sample Dashboard](https://github.com/pazinio/Health-AI-Blueprints-TA4HVisualizer/blob/main/img11.png)
-
-**Deploy Visualizer to Azure2**
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fpazinio%2FHealth-AI-Blueprints-TA4HVisualizer%2Fmain%2Fazuredeploy.json)
 
 **Links**:
 TA4H:
