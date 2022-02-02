@@ -5,6 +5,10 @@
         "vulnerabilityAssessments_Default_storageContainerPath": {
             "type": "SecureString"
         },
+        "sites_ta4h_vis_webapp_name": {
+            "defaultValue": "ta4h-vis-webapp",
+            "type": "String"
+        },
         "sites_VisualizerFunctions_name": {
             "defaultValue": "VisualizerFunctions",
             "type": "String"
@@ -19,6 +23,10 @@
         },
         "serverfarms_ASP_TA4HVisualizer_8f8d_name": {
             "defaultValue": "ASP-TA4HVisualizer-8f8d",
+            "type": "String"
+        },
+        "serverfarms_ASP_TA4HVisualizer_b33f_name": {
+            "defaultValue": "ASP-TA4HVisualizer-b33f",
             "type": "String"
         },
         "accounts_ta_visualizer_name": {
@@ -185,6 +193,32 @@
                 "capacity": 0
             },
             "kind": "functionapp",
+            "properties": {
+                "perSiteScaling": false,
+                "elasticScaleEnabled": false,
+                "maximumElasticWorkerCount": 1,
+                "isSpot": false,
+                "reserved": false,
+                "isXenon": false,
+                "hyperV": false,
+                "targetWorkerCount": 0,
+                "targetWorkerSizeId": 0,
+                "zoneRedundant": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "2021-02-01",
+            "name": "[parameters('serverfarms_ASP_TA4HVisualizer_b33f_name')]",
+            "location": "East US",
+            "sku": {
+                "name": "S1",
+                "tier": "Standard",
+                "size": "S1",
+                "family": "S",
+                "capacity": 1
+            },
+            "kind": "app",
             "properties": {
                 "perSiteScaling": false,
                 "elasticScaleEnabled": false,
@@ -1101,6 +1135,55 @@
         {
             "type": "Microsoft.Web/sites",
             "apiVersion": "2021-02-01",
+            "name": "[parameters('sites_ta4h_vis_webapp_name')]",
+            "location": "East US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ASP_TA4HVisualizer_b33f_name'))]"
+            ],
+            "kind": "app",
+            "properties": {
+                "enabled": true,
+                "hostNameSslStates": [
+                    {
+                        "name": "[concat(parameters('sites_ta4h_vis_webapp_name'), '.azurewebsites.net')]",
+                        "sslState": "Disabled",
+                        "hostType": "Standard"
+                    },
+                    {
+                        "name": "[concat(parameters('sites_ta4h_vis_webapp_name'), '.scm.azurewebsites.net')]",
+                        "sslState": "Disabled",
+                        "hostType": "Repository"
+                    }
+                ],
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ASP_TA4HVisualizer_b33f_name'))]",
+                "reserved": false,
+                "isXenon": false,
+                "hyperV": false,
+                "siteConfig": {
+                    "numberOfWorkers": 1,
+                    "acrUseManagedIdentityCreds": false,
+                    "alwaysOn": true,
+                    "http20Enabled": false,
+                    "functionAppScaleLimit": 0,
+                    "minimumElasticInstanceCount": 0
+                },
+                "scmSiteAlsoStopped": false,
+                "clientAffinityEnabled": true,
+                "clientCertEnabled": false,
+                "clientCertMode": "Required",
+                "hostNamesDisabled": false,
+                "customDomainVerificationId": "40B8747EBF0B70401143CCB79B75476F6199C7DABBF7C8B298A43D988738D5AC",
+                "containerSize": 0,
+                "dailyMemoryTimeQuota": 0,
+                "httpsOnly": false,
+                "redundancyMode": "None",
+                "storageAccountRequired": false,
+                "keyVaultReferenceIdentity": "SystemAssigned"
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2021-02-01",
             "name": "[parameters('sites_VisualizerFunctions_name')]",
             "location": "East US",
             "dependsOn": [
@@ -1150,10 +1233,34 @@
         {
             "type": "Microsoft.Web/sites/basicPublishingCredentialsPolicies",
             "apiVersion": "2021-02-01",
+            "name": "[concat(parameters('sites_ta4h_vis_webapp_name'), '/ftp')]",
+            "location": "East US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_ta4h_vis_webapp_name'))]"
+            ],
+            "properties": {
+                "allow": true
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/basicPublishingCredentialsPolicies",
+            "apiVersion": "2021-02-01",
             "name": "[concat(parameters('sites_VisualizerFunctions_name'), '/ftp')]",
             "location": "East US",
             "dependsOn": [
                 "[resourceId('Microsoft.Web/sites', parameters('sites_VisualizerFunctions_name'))]"
+            ],
+            "properties": {
+                "allow": true
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/basicPublishingCredentialsPolicies",
+            "apiVersion": "2021-02-01",
+            "name": "[concat(parameters('sites_ta4h_vis_webapp_name'), '/scm')]",
+            "location": "East US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_ta4h_vis_webapp_name'))]"
             ],
             "properties": {
                 "allow": true
@@ -1169,6 +1276,86 @@
             ],
             "properties": {
                 "allow": true
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/config",
+            "apiVersion": "2021-02-01",
+            "name": "[concat(parameters('sites_ta4h_vis_webapp_name'), '/web')]",
+            "location": "East US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_ta4h_vis_webapp_name'))]"
+            ],
+            "properties": {
+                "numberOfWorkers": 1,
+                "defaultDocuments": [
+                    "Default.htm",
+                    "Default.html",
+                    "Default.asp",
+                    "index.htm",
+                    "index.html",
+                    "iisstart.htm",
+                    "default.aspx",
+                    "index.php",
+                    "hostingstart.html"
+                ],
+                "netFrameworkVersion": "v4.0",
+                "nodeVersion": "~16",
+                "requestTracingEnabled": false,
+                "remoteDebuggingEnabled": false,
+                "httpLoggingEnabled": false,
+                "acrUseManagedIdentityCreds": false,
+                "logsDirectorySizeLimit": 35,
+                "detailedErrorLoggingEnabled": false,
+                "publishingUsername": "$ta4h-vis-webapp",
+                "scmType": "None",
+                "use32BitWorkerProcess": true,
+                "webSocketsEnabled": false,
+                "alwaysOn": true,
+                "managedPipelineMode": "Integrated",
+                "virtualApplications": [
+                    {
+                        "virtualPath": "/",
+                        "physicalPath": "site\\wwwroot",
+                        "preloadEnabled": true
+                    }
+                ],
+                "loadBalancing": "LeastRequests",
+                "experiments": {
+                    "rampUpRules": []
+                },
+                "autoHealEnabled": false,
+                "vnetRouteAllEnabled": false,
+                "vnetPrivatePortsCount": 0,
+                "localMySqlEnabled": false,
+                "ipSecurityRestrictions": [
+                    {
+                        "ipAddress": "Any",
+                        "action": "Allow",
+                        "priority": 1,
+                        "name": "Allow all",
+                        "description": "Allow all access"
+                    }
+                ],
+                "scmIpSecurityRestrictions": [
+                    {
+                        "ipAddress": "Any",
+                        "action": "Allow",
+                        "priority": 1,
+                        "name": "Allow all",
+                        "description": "Allow all access"
+                    }
+                ],
+                "scmIpSecurityRestrictionsUseMain": false,
+                "http20Enabled": false,
+                "minTlsVersion": "1.2",
+                "scmMinTlsVersion": "1.0",
+                "ftpsState": "AllAllowed",
+                "preWarmedInstanceCount": 0,
+                "functionAppScaleLimit": 0,
+                "functionsRuntimeScaleMonitoringEnabled": false,
+                "minimumElasticInstanceCount": 0,
+                "azureStorageAccounts": {}
             }
         },
         {
@@ -1276,6 +1463,25 @@
             }
         },
         {
+            "type": "Microsoft.Web/sites/deployments",
+            "apiVersion": "2021-02-01",
+            "name": "[concat(parameters('sites_ta4h_vis_webapp_name'), '/ffbb989ab9ac4f8a8e77b27d5a530455')]",
+            "location": "East US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_ta4h_vis_webapp_name'))]"
+            ],
+            "properties": {
+                "status": 4,
+                "author_email": "N/A",
+                "author": "VS Code",
+                "deployer": "ZipDeploy",
+                "message": "Created via a push deployment",
+                "start_time": "2022-02-02T12:03:25.9598711Z",
+                "end_time": "2022-02-02T12:17:16.2540063Z",
+                "active": true
+            }
+        },
+        {
             "type": "Microsoft.Web/sites/functions",
             "apiVersion": "2021-02-01",
             "name": "[concat(parameters('sites_VisualizerFunctions_name'), '/jsonsToSql')]",
@@ -1316,6 +1522,19 @@
         {
             "type": "Microsoft.Web/sites/hostNameBindings",
             "apiVersion": "2021-02-01",
+            "name": "[concat(parameters('sites_ta4h_vis_webapp_name'), '/', parameters('sites_ta4h_vis_webapp_name'), '.azurewebsites.net')]",
+            "location": "East US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_ta4h_vis_webapp_name'))]"
+            ],
+            "properties": {
+                "siteName": "ta4h-vis-webapp",
+                "hostNameType": "Verified"
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/hostNameBindings",
+            "apiVersion": "2021-02-01",
             "name": "[concat(parameters('sites_VisualizerFunctions_name'), '/', parameters('sites_VisualizerFunctions_name'), '.azurewebsites.net')]",
             "location": "East US",
             "dependsOn": [
@@ -1325,6 +1544,22 @@
                 "siteName": "VisualizerFunctions",
                 "hostNameType": "Verified"
             }
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "[concat(parameters('sites_ta4h_vis_webapp_name'), '/2022-02-02T12_07_36_7342925')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_ta4h_vis_webapp_name'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "[concat(parameters('sites_ta4h_vis_webapp_name'), '/2022-02-02T13_07_36_7742413')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_ta4h_vis_webapp_name'))]"
+            ]
         },
         {
             "type": "Microsoft.Sql/servers/databases/advisors",
