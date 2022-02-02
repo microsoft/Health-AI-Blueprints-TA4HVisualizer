@@ -58,14 +58,15 @@ export class BlobDownloadsViewStateService {
       })
     );
 
-  private getDownloadUrlFromResponse = (): OperatorFunction<
+    private getDownloadUrlFromResponse = (): OperatorFunction<
     BlobDownloadResponseModel,
     string
   > => source =>
     source.pipe(
       switchMap(res =>
         from(res.blobBody ? res.blobBody : Promise.resolve({})).pipe(
-          map(body => window.URL.createObjectURL(body))
+            // @ts-ignore
+            map(body => window.URL.createObjectURL(body))
         )
       )
     );
