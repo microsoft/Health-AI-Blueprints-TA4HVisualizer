@@ -2,6 +2,7 @@
   "name": "health-ai-blueprints-ta4hvisualizer",
   "version": "1.0.0",
   "description": "",
+  "license": "UNLICENSED",
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
