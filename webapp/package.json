@@ -18,7 +18,7 @@
     "typescript": "3.7.2"
   },
   "scripts": {
-    "start": "yarn run build && (cd api && yarn start)",
+    "start": "npm run build && (cd api && npm start)",
     "start-client": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
