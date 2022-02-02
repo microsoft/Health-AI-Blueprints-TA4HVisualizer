@@ -1,16 +1,13 @@
+import { Axios } from 'axios-observable';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { BlobStorageRequest } from '../types/azure-storage';
-import { from } from 'rxjs';
 
 export class SasGeneratorService {
-  getSasToken(): 
-  Observable<BlobStorageRequest> {
-    return from(new Promise<BlobStorageRequest>((resolve, reject) => {
-        resolve({
-          storageUri: process.env.storageUri!,
-          storageAccessToken: process.env.storageAccessToken!
-        })
-    }));
-  }
+    getSasToken(): Observable<BlobStorageRequest> {
+        // @ts-ignore
+        return Axios.get<BlobStorageRequest>('generateSasToken')
+        // @ts-ignore
+        .pipe(map(res => res.data));
+    }
 }
-

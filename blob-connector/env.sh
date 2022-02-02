@@ -1,2 +1,0 @@
-export storageUri='https://medicaltextsstorage.blob.core.windows.net/'
-export storageAccessToken='?sv=2020-08-04&ss=b&srt=sco&sp=rwdlacix&se=2022-03-31T20:38:56Z&st=2022-01-12T13:38:56Z&spr=https&sig=yiXK3QY4mSA5GvaHs3cXCsZ3pJlunzrAu6pWtb1yGlY%3D'
