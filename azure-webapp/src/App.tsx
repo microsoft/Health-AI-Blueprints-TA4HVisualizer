@@ -61,7 +61,6 @@ const App: React.FC = () => (
                 </iframe> }
           </TabPanel>
       </Tabs>
-      );
   </>
 );
 
