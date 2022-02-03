@@ -2,9 +2,11 @@
   "name": "api",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "azure-webapp/api/server.js",
   "license": "UNLICENSED",
   "scripts": {
+    "start" : "cd azure-webapp && npm run build && cd api && node server.js",
+    "prestart": "npm install",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
