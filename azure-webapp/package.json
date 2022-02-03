@@ -13,9 +13,10 @@
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-scripts": "3.2.0",
+    "react-tabs": "^3.2.3",
     "rxjs": "^6.5.3",
     "sass": "^1.49.7",
-    "typescript": "3.7.2"
+    "typescript": "3.9.5"
   },
   "scripts": {
     "start": "npm run build && (cd api && npm start)",
@@ -39,5 +40,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/react-tabs": "^2.3.4"
   }
 }

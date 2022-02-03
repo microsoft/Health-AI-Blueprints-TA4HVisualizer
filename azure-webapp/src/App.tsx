@@ -7,6 +7,8 @@ import ItemsList from './azure-storage/components/ItemsList';
 import ItemsUploaded from './azure-storage/components/ItemsUploaded';
 import SelectedContainer from './azure-storage/components/SelectedContainer';
 import Header from './layout/Header';
+import 'react-tabs/style/react-tabs.css';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 const App: React.FC = () => (
   <>
@@ -23,6 +25,20 @@ const App: React.FC = () => (
         <ItemsDeleted />
       </div>
     </SelectedContainer>
+      <Tabs>
+          <TabList>
+              <Tab>Title 1</Tab>
+              <Tab>Title 2</Tab>
+          </TabList>
+
+          <TabPanel>
+              <h2>Any content 1</h2>
+          </TabPanel>
+          <TabPanel>
+              <h2>Any content 2</h2>
+          </TabPanel>
+      </Tabs>
+      );
   </>
 );
 

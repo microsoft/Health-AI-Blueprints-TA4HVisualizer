@@ -1,7 +1,8 @@
 #local app service env
-blob-storage-connector/env.sh
+azure-webapp/env.sh
 
 .idea/*
+.vscode/*
 
 # Logs
 logs
@@ -97,3 +98,4 @@ bin
 obj
 appsettings.json
 local.settings.json
+.DS_Store
