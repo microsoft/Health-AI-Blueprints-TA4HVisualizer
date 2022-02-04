@@ -2,16 +2,19 @@
   "name": "api",
   "version": "1.0.0",
   "description": "",
-  "main": "azure-webapp/api/server.js",
-  "license": "UNLICENSED",
+  "main": "server.js",
+  "license": "ISC",
   "scripts": {
-    "start" : "cd azure-webapp && npm run build && cd api && node server.js",
-    "prestart": "npm install",
+    "start": "node server.js",
+    "start-server-only": "node server.js",
+    "prestart": "npm install && cd azure-webapp && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.2",
     "cookie-parser": "^1.4.6",
     "crypto": "^1.0.1"
   }

@@ -11,7 +11,6 @@ const ItemsDownloaded: React.FC = () => {
     const sub = context.downloadedItems$
       .pipe(tap(items => setItems(items)))
       .subscribe();
-
     return () => sub.unsubscribe();
   };
   useEffect(getDownloadedItems, []);
