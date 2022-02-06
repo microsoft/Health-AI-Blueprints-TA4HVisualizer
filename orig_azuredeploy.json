@@ -5,56 +5,21 @@
         "vulnerabilityAssessments_Default_storageContainerPath": {
             "type": "SecureString"
         },
-        "accounts_ta_visualizer_name": {
-            "type": "String",
-            "defaultValue": "[concat('ta4h', uniqueString(utcNow('F')))]",
-            "metadata":{
-                "description": "Azure TextAnalytics Service name. Has to be unique."
-            }
-        },
-        "storageAccounts_medicaltextsstorage_name": {
-            "type": "String",
-            "defaultValue": "[concat('ta4hstorage', uniqueString(utcNow('F')))]",
-            "metadata":{
-                "description": "Azure StorageAccount name. Has to be unique."
-            }
-        },
         "sites_ta4h_vis_webapp_name": {
-            "type": "String",
-            "defaultValue": "[concat('ta4h-vis-webapp', uniqueString(utcNow('F')))]",
-            "metadata":{
-                "description": "Azure WebApp site name. Has to be unique."
-            }
+            "defaultValue": "ta4h-vis-webapp",
+            "type": "String"
         },
         "sites_VisualizerFunctions_name": {
-            "type": "String",
-            "defaultValue": "[concat('ta4h-vis-functions', uniqueString(utcNow('F')))]",
-            "metadata":{
-                "description": "Azure FunctionApps name. Has to be unique."
-            }
+            "defaultValue": "VisualizerFunctions",
+            "type": "String"
         },
         "servers_visualizer_sql_server_name": {
-            "type": "String",
-            "defaultValue": "[concat('ta4h-vis-sql-server', uniqueString(utcNow('F')))]",
-            "metadata":{
-                "description": "Sql Server name. Has to be unique."
-            }
+            "defaultValue": "visualizer-sql-server",
+            "type": "String"
         },
         "components_ta4h_vis_webapp_name": {
             "defaultValue": "ta4h-vis-webapp",
             "type": "String"
-        },
-        "skuName": {
-            "type": "string",
-            "defaultValue": "P1V2",
-            "allowedValues": [
-                "B1",
-                "S1",
-                "P1V2"
-            ],
-            "metadata": {
-                "description": "Describes plan's pricing tier and instance size. Check details at https://azure.microsoft.com/en-us/pricing/details/app-service/"
-            }
         },
         "components_VisualizerFunctions_name": {
             "defaultValue": "VisualizerFunctions",
@@ -66,6 +31,14 @@
         },
         "serverfarms_ASP_TA4HVisualizer_b33f_name": {
             "defaultValue": "ASP-TA4HVisualizer-b33f",
+            "type": "String"
+        },
+        "accounts_ta_visualizer_name": {
+            "defaultValue": "ta-visualizer",
+            "type": "String"
+        },
+        "storageAccounts_medicaltextsstorage_name": {
+            "defaultValue": "medicaltextsstorage",
             "type": "String"
         },
         "storageAccounts_storageaccountta4hv9d66_name": {
@@ -93,9 +66,7 @@
             "type": "String"
         }
     },
-    "variables": {
-        "skuCode": "[parameters('skuName')]"
-    },
+    "variables": {},
     "resources": [
         {
             "type": "Microsoft.CognitiveServices/accounts",
