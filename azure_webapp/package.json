@@ -21,7 +21,7 @@
     "moment": "^2.29.1"
   },
   "scripts": {
-    "start": "npm run build && (cd api && npm start)",
+    "start": "react-scripts build && react-scripts start",
     "start-client": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
