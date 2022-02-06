@@ -16,9 +16,18 @@ if (DEV_MODE) {
     app.use(cors());
 }
 
-// add middlewares
-app.use(express.static(path.join(__dirname, "azure_webapp", "build")));
-app.use(express.static(path.join(__dirname, "azure_webapp", "public")));
+let options = {};
+// uncomment the line below if you wish to allow only specific domains to embed this page as a frame
+//options = {setHeaders: (res, path, stat) => {res.set('Content-Security-Policy', 'frame-ancestors example.com')}};
+// Indicate which directory static resources
+// (e.g. stylesheets) should be served from.
+app.use(express.static(path.join(__dirname, "azure_webapp/build"), options));
+// app.use(express.static(path.join(__dirname, "azure_webapp/public"), options));
+
+
+// // add middlewares
+// app.use(express.static(path.join(__dirname, "azure_webapp", "build")));
+// app.use(express.static(path.join(__dirname, "azure_webapp", "public")));
 
 // begin listening for requests.
 const port = process.env.PORT || 5555;
