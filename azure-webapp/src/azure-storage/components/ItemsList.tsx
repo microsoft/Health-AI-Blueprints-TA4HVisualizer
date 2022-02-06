@@ -1,46 +1,88 @@
 import { BlobItem } from '@azure/storage-blob';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { tap } from 'rxjs/operators';
 import {
-  DeletesViewStateContext,
-  DownloadsViewStateContext,
-  SharedViewStateContext
+    DeletesViewStateContext,
+    DownloadsViewStateContext,
+    SharedViewStateContext
 } from '../contexts/viewStateContext';
+import { Icon, DefaultButton, DetailsList, SelectionMode, Stack, Text } from "@fluentui/react";
+import moment from "moment";
 
 const ItemsList: React.FC = () => {
-  const sharedContext = useContext(SharedViewStateContext);
-  const downloadsContext = useContext(DownloadsViewStateContext);
-  const deletesContext = useContext(DeletesViewStateContext);
-  const [items, setItems] = useState<BlobItem[]>([]);
+    const sharedContext = useContext(SharedViewStateContext);
+    const downloadsContext = useContext(DownloadsViewStateContext);
+    const deletesContext = useContext(DeletesViewStateContext);
+    const [items, setItems] = useState<BlobItem[]>([]);
 
-  const getContainerItemsEffect = () => {
-    const sub = sharedContext.itemsInContainer$
-      .pipe(tap(items => setItems(items)))
-      .subscribe();
+    const getContentLengthString = (length: number) => {
+        if (length < 1024) {
+            return `${length} bytes`;
+        } else if (length < (1024 * 1024)) {
+            return `${Math.round(length / 1024)} KBs`
+        } else if (length < (1024 * 1024 * 1024)) {
+            return `${Math.round(length / (1024 * 1024 * 1024))} MBs`
+        } else if (length < (1024 * 1024 * 1024 * 1024)) {
+            return `${Math.round(length / (1024 * 1024 * 1024 * 1024))} GBs`
+        }
+    }
 
-    return () => sub.unsubscribe();
-  };
-  useEffect(getContainerItemsEffect, []);
+    const downloadDocument = useCallback( async (name: string) => {
+        downloadsContext.downloadItem(name);
+    }, []);
+    const deleteDocument = useCallback( async (name: string) => {
+        deletesContext.deleteItem(name);
+    }, []);
 
-  return (
-    <div className="items-list">
-      {items.map((item, i) => (
-        <div key={i}>
-          <span>{item.name}</span>
-          <span>{item.properties.contentLength}</span>
-          <span>{item.properties.lastModified.toISOString()}</span>
-          <div>
-            <button onClick={() => downloadsContext.downloadItem(item.name)}>
-              Download
-            </button>
-            <button onClick={() => deletesContext.deleteItem(item.name)}>
-              Delete
-            </button>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
+    const getContainerItemsEffect = () => {
+        const sub = sharedContext.itemsInContainer$
+            .pipe(tap(items => setItems(items)))
+            .subscribe();
+
+        return () => sub.unsubscribe();
+    };
+    useEffect(getContainerItemsEffect, []);
+
+    return (
+        <>
+            <DetailsList
+                items={items ?? []}
+                setKey="set"
+                selectionMode={SelectionMode.none}
+                columns={[
+                    {
+                        key: "name",
+                        name: "Name",
+                        fieldName: "name",
+                        minWidth: 100
+                    },
+                    {
+                        key: "lastModified",
+                        name: "Last modified",
+                        onRender: (item: BlobItem) =>
+                            <Text>{moment(item.properties.lastModified.toISOString()).calendar()}</Text>,
+                        minWidth: 200
+                    },
+                    {
+                        key: "contentLength",
+                        name: "Length",
+                        onRender: (item: BlobItem) =>
+                            <Text>{getContentLengthString(item.properties?.contentLength ?? 0)}</Text>,
+                        minWidth: 80
+                    },
+                    {
+                        key: "actions",
+                        name: "Actions",
+                        onRender: (item: BlobItem) => <Stack horizontal tokens={{childrenGap: 10}}>
+                            <DefaultButton onClick={() => downloadDocument(item.name)}><Icon iconName={"download"}/> Download</DefaultButton>
+                            <DefaultButton onClick={() => deleteDocument(item.name)}><Icon iconName={"delete"}/> Delete</DefaultButton>
+                        </Stack>,
+                        minWidth: 200
+                    }
+                ]}
+            />
+        </>
+    );
 };
 
 export default ItemsList;

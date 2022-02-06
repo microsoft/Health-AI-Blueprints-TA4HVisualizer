@@ -5,17 +5,17 @@ const path = require("path");
 const cookieParser = require('cookie-parser');
 const STORAGE_KEY = process.env.STORAGE_KEY;
 const STORAGE_ACCOUNT_NAME = process.env.STORAGE_ACCOUNT_NAME;
-
+const cors = require("cors");
 // Initialize the web app instance,
 const app = express();
+app.use(cors());
 app.use(cookieParser());
 
 // add middlewares
-app.use(express.static(path.join(__dirname, "..", "build")));
-app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, "azure-webapp", "build")));
 
 // begin listening for requests.
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 const region = process.env.REGION || "Unknown";
 
 app.listen(port, function() {

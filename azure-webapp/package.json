@@ -16,7 +16,9 @@
     "react-tabs": "^3.2.3",
     "rxjs": "^6.5.3",
     "sass": "^1.49.7",
-    "typescript": "3.9.5"
+    "typescript": "3.9.5",
+    "@fluentui/react": "^8.52.3",
+    "moment": "^2.29.1"
   },
   "scripts": {
     "start": "npm run build && (cd api && npm start)",
