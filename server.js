@@ -5,17 +5,22 @@ const path = require("path");
 const cookieParser = require('cookie-parser');
 const STORAGE_KEY = process.env.STORAGE_KEY;
 const STORAGE_ACCOUNT_NAME = process.env.STORAGE_ACCOUNT_NAME;
+const DEV_MODE = process.env.DEV_MODE;
+
 const cors = require("cors");
 // Initialize the web app instance,
 const app = express();
-app.use(cors());
 app.use(cookieParser());
+
+if (DEV_MODE) {
+    app.use(cors());
+}
 
 // add middlewares
 app.use(express.static(path.join(__dirname, "azure-webapp", "build")));
 
 // begin listening for requests.
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5555;
 const region = process.env.REGION || "Unknown";
 
 app.listen(port, function() {
@@ -65,6 +70,5 @@ const generateSasToken = function(expiresInMinutes) {
         signedVersion + '\n';
 
     const sig = crypto.createHmac('sha256', Buffer.from(key, 'base64')).update(stringToSign, 'utf8').digest('base64');
-    const sasToken = `sv=${(signedVersion)}&ss=${(signedService)}&srt=${(signedResourceType)}&sp=${(signedPermissions)}&se=${encodeURIComponent(signedExpiry)}&spr=${(signedProtocol)}&sig=${encodeURIComponent(sig)}`;
-    return sasToken;
+    return `sv=${(signedVersion)}&ss=${(signedService)}&srt=${(signedResourceType)}&sp=${(signedPermissions)}&se=${encodeURIComponent(signedExpiry)}&spr=${(signedProtocol)}&sig=${encodeURIComponent(sig)}`;
 };
