@@ -19,19 +19,24 @@ const ItemsList: React.FC = () => {
         if (length < 1024) {
             return `${length} bytes`;
         } else if (length < (1024 * 1024)) {
-            return `${Math.round(length / 1024)} KBs`
+            return `${round(length / 1024)} KBs`
         } else if (length < (1024 * 1024 * 1024)) {
-            return `${Math.round(length / (1024 * 1024 * 1024))} MBs`
+            return `${round(length / (1024 * 1024 * 1024))} MBs`
         } else if (length < (1024 * 1024 * 1024 * 1024)) {
-            return `${Math.round(length / (1024 * 1024 * 1024 * 1024))} GBs`
+            return `${round(length / (1024 * 1024 * 1024 * 1024))} GBs`
         }
     }
 
+    // @ts-ignore
+    const round = (x:number) => Math.round(x);
+
     const downloadDocument = useCallback( async (name: string) => {
         downloadsContext.downloadItem(name);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     const deleteDocument = useCallback( async (name: string) => {
         deletesContext.deleteItem(name);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const getContainerItemsEffect = () => {

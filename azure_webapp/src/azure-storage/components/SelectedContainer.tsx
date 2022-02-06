@@ -21,6 +21,7 @@ const SelectedContainer: React.FC<React.HTMLProps<HTMLDivElement>> = ({
     useEffect(() => {
         context.getContainerItems("medical-texts-input");
         setSelectedContainer();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const inputFileRef = useRef<HTMLInputElement>(null);
