@@ -22,12 +22,6 @@ let options = {};
 // Indicate which directory static resources
 // (e.g. stylesheets) should be served from.
 app.use(express.static(path.join(__dirname, "azure_webapp/build"), options));
-// app.use(express.static(path.join(__dirname, "azure_webapp/public"), options));
-
-
-// // add middlewares
-// app.use(express.static(path.join(__dirname, "azure_webapp", "build")));
-// app.use(express.static(path.join(__dirname, "azure_webapp", "public")));
 
 // begin listening for requests.
 const port = process.env.PORT || 5555;
