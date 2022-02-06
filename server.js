@@ -18,6 +18,7 @@ if (DEV_MODE) {
 
 // add middlewares
 app.use(express.static(path.join(__dirname, "azure-webapp", "build")));
+app.use(express.static(path.join(__dirname, "azure-webapp", "public")));
 
 // begin listening for requests.
 const port = process.env.PORT || 5555;
