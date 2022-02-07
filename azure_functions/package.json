@@ -10,6 +10,9 @@
     "start": "func start",
     "test": "echo \"No tests yet...\""
   },
+  "engines" : {
+    "node": ">=14.0.0 <15"
+  },
   "devDependencies": {
     "@azure/functions": "^1.2.3",
     "@types/node": "^17.0.2",

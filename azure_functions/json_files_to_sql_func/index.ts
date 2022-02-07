@@ -3,11 +3,12 @@ import { Connection, Request } from "tedious";
 module.exports = async function (context, myBlob) {
     context.log("JavaScript blob trigger function processed blob \n Blob:", context.bindingData.blobTrigger, "\n Blob Size:", myBlob.length, "Bytes");
     const sql = getSQL(context, myBlob);
-    try {
-        await executeSQL(sql);
-    }
-    catch (err) {
-        context.log.error(err);
+    if (sql) {
+        try {
+            await executeSQL(sql);
+        } catch (err) {
+            context.log.error(err);
+        }
     }
 
     context.log('Functions.BlobTriggerTA4HJsonToSql FINISHED')
@@ -15,8 +16,20 @@ module.exports = async function (context, myBlob) {
 };
 
 function getSQL(context, myBlob) {
-    const myBlobObj = JSON.parse(myBlob.toString());
-    const output_id = myBlobObj.output_id.hashCode(); 
+    let myBlobObj = '';
+    try {
+        myBlobObj = JSON.parse(myBlob.toString());
+    }
+    catch (e) {
+        context.log(myBlob + " ignored. illegal json:" + e.message)
+        return '';
+    }
+
+    if (!myBlobObj['output_id']) {
+        context.log(myBlob + " ignored. illegal schema: output_id is missing");
+        return '';
+    }
+    const output_id = myBlobObj['output_id'].hashCode();
 
     const tables = ['examinations', 'medications', 'symptoms', 'diagnoses', 'treatments'];
     const sqlCommand = tables

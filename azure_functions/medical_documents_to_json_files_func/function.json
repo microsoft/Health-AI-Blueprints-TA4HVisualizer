@@ -15,5 +15,5 @@
       "connection": "medicaltextsstorage_STORAGE"
     }
   ],
-  "scriptFile": "../dist/medicalTextsToJsons/index.js"
+  "scriptFile": "../dist/medical_documents_to_json_files_func/index.js"
 }

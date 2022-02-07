@@ -8,5 +8,5 @@
       "connection": "medicaltextsstorage_STORAGE"
     }
   ],
-  "scriptFile": "../dist/jsonsToSql/index.js"
+  "scriptFile": "../dist/json_files_to_sql_func/index.js"
 }

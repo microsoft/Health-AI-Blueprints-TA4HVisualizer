@@ -122,22 +122,29 @@ const blobTrigger: AzureFunction = async function (context: Context, myBlob: any
         
         // categorise entities found in lab report into categorisedOutput object
         if (entity.assertion){
+            context.log(entity);
             // deal with negative cases
-        } else if (entity.category === "Gender"){
+        }
+        else if (entity.category === "Gender"){
             if (entity.codes[0].code === "C0043210") {
                 responseMessage.patient.gender = "F";
             } else {
                 responseMessage.patient.gender = "M";
             }
-        } else if (entity.category === "ExaminationName"){
+        }
+        else if (entity.category === "ExaminationName"){
             categorisedOutput.examinations.push(entity);
-        } else if (entity.category === "Diagnosis"){
+        }
+        else if (entity.category === "Diagnosis"){
             categorisedOutput.diagnoses.push(entity);
-        } else if (entity.category === "SymptomOrSign"){
+        }
+        else if (entity.category === "SymptomOrSign"){
             categorisedOutput.symptoms.push(entity);
-        } else if (entity.category === "TreatmentName"){
+        }
+        else if (entity.category === "TreatmentName"){
             categorisedOutput.treatments.push(entity);
-        } else if (entity.category === "MedicationClass" || entity.category === "MedicationName"){
+        }
+        else if (entity.category === "MedicationClass" || entity.category === "MedicationName"){
             categorisedOutput.medications.push(entity);
         }
     });
