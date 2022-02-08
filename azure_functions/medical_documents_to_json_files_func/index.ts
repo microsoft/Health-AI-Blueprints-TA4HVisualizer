@@ -7,8 +7,8 @@ const blobTrigger: AzureFunction = async function (context: Context, myBlob: any
     context.log("Blob trigger function processed blob \n Name:", context.bindingData.name, "\n Blob Size:", myBlob.length, "Bytes");
 
     // You will need to set these environment variables or edit the following values
-    const endpoint = process.env.taEndpoint;
-    const apiKey = process.env.taApiKey;
+    const endpoint = process.env.TA_ENDPOINT;
+    const apiKey = process.env.TA_API_KEY;
     const algVersion = 0.1;
     
     const documents = myBlob.toString().match(/(.{1,5120})/gs);
@@ -69,6 +69,7 @@ const blobTrigger: AzureFunction = async function (context: Context, myBlob: any
             category: entity.category,
             confidenceScore: entity.confidenceScore,
             name: '',
+            assertion: entity.assertion,
             codes: []
         };
 
@@ -119,11 +120,13 @@ const blobTrigger: AzureFunction = async function (context: Context, myBlob: any
         
         // remove entity length as it is not needed
         delete entity.length;
-        
+
         // categorise entities found in lab report into categorisedOutput object
-        if (entity.assertion){
-            context.log(entity);
-            // deal with negative cases
+        if (entity.assertion && entity.assertion.certainty) {
+            entity.certainty = entity.assertion.certainty;
+        }
+        if (entity.codes && entity.codes[0] && entity.codes[0].coding_system === 'UMLS') {
+            entity.umls = entity.codes[0].code;
         }
         else if (entity.category === "Gender"){
             if (entity.codes[0].code === "C0043210") {

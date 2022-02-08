@@ -55,8 +55,9 @@ function addAttributes(myBlobObj, attribute, output_id) {
     for (let i = 0; i < arr.length; i++) {
         let text = (arr[i].text || '').replace(/[^a-zA-Z ]/g, ""); 
         let name = (arr[i].name || '').replace(/[^a-zA-Z ]/g, ""); 
-        let confidence_score = parseInt(arr[i].confidence_score || arr[i].confidenceScore || 0).toFixed(3) || 0; 
-        let inner = `${output_id}, '${text}', '${name}', ${confidence_score}`;
+        let confidence_score = parseInt(arr[i].confidence_score || arr[i].confidenceScore || 0).toFixed(3) || 0;
+        let certainty = (arr[i].certainty || '').replace(/[^a-zA-Z ]/g, "");
+        let inner = `${output_id}, '${text}', '${name}', '${confidence_score}', '${certainty}'`;
         res += `(${inner}),`;
     }
 
@@ -67,14 +68,14 @@ function addAttributes(myBlobObj, attribute, output_id) {
 const config = {
     authentication: {
         options: {
-            userName: process.env.sql_username, 
-            password: process.env.sql_password 
+            userName: process.env.SQL_USERNAME,
+            password: process.env.SQL_PASSWORD
         },
         type: "default"
     },
-    server: process.env.sql_server, 
+    server: process.env.SQL_SERVER,
     options: {
-        database: process.env.sql_dbname, 
+        database: process.env.SQL_DBNAME,
         encrypt: true
     }
 };
@@ -90,7 +91,7 @@ function parsePotentiallyGroupedFloat(stringValue) {
 }
 
 String.prototype['hashCode'] = function() {
-    var hash = 0, i, chr, len;
+    let hash = 0, i, chr, len;
     if (this.length === 0) return hash;
     for (i = 0, len = this.length; i < len; i++) {
       chr   = this.charCodeAt(i);

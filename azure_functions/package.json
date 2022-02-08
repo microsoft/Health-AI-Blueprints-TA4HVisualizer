@@ -10,7 +10,7 @@
     "start": "func start",
     "test": "echo \"No tests yet...\""
   },
-  "engines" : {
+  "engines": {
     "node": ">=14.0.0 <15"
   },
   "devDependencies": {
