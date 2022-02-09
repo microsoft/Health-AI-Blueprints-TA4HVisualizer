@@ -9,7 +9,8 @@ CREATE TABLE [dbo].[diagnoses](
 	[output_id] [int] NULL,
 	[text] [varchar](max) NULL,
 	[name] [varchar](max) NULL,
-	[confidence_score] [float] NULL
+	[confidence_score] [float] NULL,
+    [certainty] [varchar](max) NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 /****** Object:  Table [dbo].[examinations]    Script Date: 1/4/2022 5:40:03 PM ******/
@@ -23,7 +24,8 @@ CREATE TABLE [dbo].[examinations](
 	[output_id] [int] NULL,
 	[text] [varchar](max) NULL,
 	[name] [varchar](max) NULL,
-	[confidence_score] [float] NULL
+	[confidence_score] [float] NULL,
+    [certainty] [varchar](max) NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 /****** Object:  Table [dbo].[medications]    Script Date: 1/4/2022 5:40:03 PM ******/
@@ -36,7 +38,8 @@ CREATE TABLE [dbo].[medications](
 	[output_id] [int] NULL,
 	[text] [varchar](max) NULL,
 	[name] [varchar](max) NULL,
-	[confidence_score] [float] NULL
+	[confidence_score] [float] NULL,
+    [certainty] [varchar](max) NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 /****** Object:  Table [dbo].[reports]    Script Date: 1/4/2022 5:40:03 PM ******/
@@ -65,7 +68,8 @@ CREATE TABLE [dbo].[symptoms](
 	[output_id] [int] NULL,
 	[text] [varchar](max) NULL,
 	[name] [varchar](max) NULL,
-	[confidence_score] [float] NULL
+	[confidence_score] [float] NULL,
+    [certainty] [varchar](max) NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
@@ -79,6 +83,7 @@ CREATE TABLE [dbo].[treatments](
 	[output_id] [int] NULL,
 	[text] [varchar](max) NULL,
 	[name] [varchar](max) NULL,
-	[confidence_score] [float] NULL
+	[confidence_score] [float] NULL,
+    [certainty] [varchar](max) NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO

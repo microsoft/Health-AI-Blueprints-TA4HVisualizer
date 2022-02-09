@@ -31,14 +31,19 @@ function getSQL(context, myBlob) {
     }
     const output_id = myBlobObj['output_id'].hashCode();
 
-    const tables = ['examinations', 'medications', 'symptoms', 'diagnoses', 'treatments'];
+    const tables = [
+        'examinations',
+        'medications',
+        'symptoms',
+        'diagnoses',
+        'treatments'
+    ];
     const sqlCommand = tables
             .map(t => addAttributes(myBlobObj, t, output_id))
             .concat(addReports(myBlobObj, output_id))
             .join(';')
 
     if (sqlCommand.length <= 4) return '';
-    // context.log(sqlCommand);
     return sqlCommand;
 }
        
@@ -62,7 +67,7 @@ function addAttributes(myBlobObj, attribute, output_id) {
     }
 
     if (arr.length == 0) return '';	
-    return `INSERT INTO [dbo].${attribute} VALUES ${res.slice(0, -1)}`;
+    return `INSERT INTO [dbo].${attribute} (output_id, text, name, confidence_score, certainty) VALUES ${res.slice(0, -1)}`;
 }
 
 const config = {
