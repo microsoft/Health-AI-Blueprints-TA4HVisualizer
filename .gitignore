@@ -89,6 +89,7 @@ typings/
 # DynamoDB Local files
 .dynamodb/
 
+
 # TypeScript output
 dist
 out
