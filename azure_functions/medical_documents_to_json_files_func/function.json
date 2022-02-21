@@ -1,0 +1,19 @@
+{
+  "bindings": [
+    {
+      "name": "myBlob",
+      "type": "blobTrigger",
+      "direction": "in",
+      "path": "medical-texts-input/{name}",
+      "connection": "medicaltextsstorage_STORAGE"
+    },
+    {
+      "name": "outputBlob",
+      "type": "blob",
+      "direction": "out",
+      "path": "medical-jsons-output/{name}_ta4h_output.json",
+      "connection": "medicaltextsstorage_STORAGE"
+    }
+  ],
+  "scriptFile": "../dist/medical_documents_to_json_files_func/index.js"
+}

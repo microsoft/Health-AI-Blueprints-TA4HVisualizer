@@ -1,0 +1,12 @@
+{
+  "bindings": [
+    {
+      "name": "myBlob",
+      "type": "blobTrigger",
+      "direction": "in",
+      "path": "medical-jsons-output/{name}",
+      "connection": "medicaltextsstorage_STORAGE"
+    }
+  ],
+  "scriptFile": "../dist/json_files_to_sql_func/index.js"
+}

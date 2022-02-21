@@ -1,0 +1,14 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "DefaultEndpointsProtocol=https;AccountName=medicaltextsstorage;AccountKey=DtKDxSLXNxRb+e8U5IHPyoQhCUKd8ekTpgP6Un1KPIwaC6Y0NGHwyzyqJOGWiwWVY5APHKI3eJyeI3+jt0M57A==;EndpointSuffix=core.windows.net",
+    "FUNCTIONS_WORKER_RUNTIME": "node",
+    "medicaltextsstorage_STORAGE": "DefaultEndpointsProtocol=https;AccountName=medicaltextsstorage;AccountKey=DtKDxSLXNxRb+e8U5IHPyoQhCUKd8ekTpgP6Un1KPIwaC6Y0NGHwyzyqJOGWiwWVY5APHKI3eJyeI3+jt0M57A==;EndpointSuffix=core.windows.net",
+    "TA_ENDPOINT":"https://ta-visualizer.cognitiveservices.azure.com/",
+    "TA_API_KEY":"9f6d8030167648328220e25d55531e6f",
+    "SQL_SERVER": "visualizer-sql-server.database.windows.net",
+    "SQL_USERNAME":"visualizeradmin",
+    "SQL_PASSWORD":"adminadmin123!",
+    "SQL_DBNAME":"visualizer-sql-db"
+  }
+}
