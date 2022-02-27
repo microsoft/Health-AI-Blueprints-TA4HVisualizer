@@ -1,6 +1,5 @@
 #local app service env
-azure-webapp/env.sh
-
+env.sh
 .idea/*
 .vscode/*
 

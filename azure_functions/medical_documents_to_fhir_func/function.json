@@ -1,0 +1,12 @@
+{
+  "bindings": [
+    {
+      "name": "myBlob",
+      "type": "blobTrigger",
+      "direction": "in",
+      "path": "medical-texts-input/{name}",
+      "connection": "medicaltextsstorage_STORAGE"
+    }
+  ],
+  "scriptFile": "../dist/medical_documents_to_fhir_func/index.js"
+}
