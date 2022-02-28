@@ -1,5 +1,4 @@
 import { AzureFunction, Context } from "@azure/functions";
-import {response} from "express";
 const axios = require('axios').default;
 
 
@@ -23,17 +22,20 @@ const blobTrigger: AzureFunction = async function (context: Context, myBlob: any
         params:  { structureFHIR: true }
     };
     // const data = {body: { documents: documents }};
+
+    let fhirDocs = [];
     const data = { "documents": documents };
     try {
         const resp = await axios.post(endpoint, data, config);
         context.log(resp);
+        fhirDocs = resp.data.documents.map(d => JSON.parse(d.fhirBundle));
     }
     catch (err) {
         context.log(err);
+        throw err;
     }
 
 
-    const fhirDocs = response.data.documents.map(d => JSON.parse(d.fhirBundle));
     context.log(fhirDocs);
 }
 
