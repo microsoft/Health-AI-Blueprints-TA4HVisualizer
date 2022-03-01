@@ -16,10 +16,10 @@ Health care providers can use it to answer these questions and more:
  <br>
 
 **Dashboard**
-![Sample Dashboard](https://github.com/pazinio/Health-AI-Blueprints-TA4HVisualizer/blob/main/img11.png)
+![Sample Dashboard](https://github.com/microsoft/Health-AI-Blueprints-TA4HVisualizer/blob/main/img11.png)
 
 **Architecture**
-![Architecture](https://github.com/pazinio/Health-AI-Blueprints-TA4HVisualizer/blob/main/img12.png)
+![Architecture](https://github.com/microsoft/Health-AI-Blueprints-TA4HVisualizer/blob/main/img12.png)
 
 **Links**:
 TA4H:
