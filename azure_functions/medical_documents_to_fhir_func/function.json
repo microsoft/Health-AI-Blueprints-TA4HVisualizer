@@ -6,6 +6,13 @@
       "direction": "in",
       "path": "medical-texts-input/{name}",
       "connection": "medicaltextsstorage_STORAGE"
+    },
+    {
+      "name": "outputBlob",
+      "type": "blob",
+      "direction": "out",
+      "path": "fhirimport/{name}_ta4h_fhir_output.json",
+      "connection": "medicaltextsstorage_STORAGE"
     }
   ],
   "scriptFile": "../dist/medical_documents_to_fhir_func/index.js"
