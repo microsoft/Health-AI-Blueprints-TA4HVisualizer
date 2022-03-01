@@ -5,9 +5,7 @@
   "main": "server.js",
   "license": "ISC",
   "scripts": {
-    "start": "node server.js",
-    "start-server-only": "node server.js",
-    "prestart": "npm install && cd azure_webapp && npm install && npm run build"
+    "start": "node server.js"
   },
   "author": "",
   "dependencies": {
