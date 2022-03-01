@@ -15,7 +15,7 @@ const SetupTab: React.FC = () => {
                     <Text>Publish it using Power BI desktop</Text>
                 </li>
                 <li>
-                    <Text>Change SQL connection settings</Text>
+                    <Text>Change FHIR Server connection settings</Text>
                 </li>
                 <li>
                     <Text>Power BI Premium License is required to embed reports within the Visualizer App</Text>

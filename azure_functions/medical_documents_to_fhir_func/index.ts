@@ -16,7 +16,7 @@ const blobTrigger: AzureFunction = async function (context: Context, myBlob: any
         isAutoLanguageDetectionEnabled: false
     }));
 
-    const endpoint = process.env.TA_FHIR_STRUCTURING_ENDPOINT;
+    const structuringEndpoint = process.env.TA_FHIR_STRUCTURING_ENDPOINT;
     const config = {
         headers: { 'content-Type': 'application/json' },
         params:  { structureFHIR: true }
@@ -26,7 +26,7 @@ const blobTrigger: AzureFunction = async function (context: Context, myBlob: any
     let fhirDocs = [];
     const data = { "documents": documents };
     try {
-        const resp = await axios.post(endpoint, data, config);
+        const resp = await axios.post(structuringEndpoint, data, config);
         context.log(resp);
         fhirDocs = resp.data.documents.map(d => JSON.parse(d.fhirBundle));
     }
@@ -35,8 +35,19 @@ const blobTrigger: AzureFunction = async function (context: Context, myBlob: any
         throw err;
     }
 
-
     context.log(fhirDocs);
+
+    if (fhirDocs.length == 0) {
+        context.done();
+        return;
+    }
+
+    context.bindings.outputBlob = JSON.stringify(fhirDocs[0], null, 4);
+    context.res = {
+        // status: 200, /* Defaults to 200 */
+        body: fhirDocs[0]
+    };
+
 }
 
 export default blobTrigger;
