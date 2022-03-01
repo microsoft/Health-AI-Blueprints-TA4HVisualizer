@@ -25,9 +25,8 @@ jobs:
         run: |
           npm install
           npm run build --if-present
-          cd azure_webapp
-          npm install
-          npm run build --if-present
+          npm run test --if-present
+      
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
@@ -53,5 +52,5 @@ jobs:
         with:
           app-name: 'ta4h-vis-webapp'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_7D1FD74DB1AA49999548F41B8F1C2379 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_637354A3472D42DFBBBD3CB3D061181F }}
           package: .
