@@ -12,7 +12,7 @@
       "type": "blob",
       "direction": "out",
       "path": "fhirimport/{name}_ta4h_fhir_output.json",
-      "connection": "medicaltextsstorage_STORAGE"
+      "connection": "fhirimportstorage_STORAGE"
     }
   ],
   "scriptFile": "../dist/medical_documents_to_fhir_func/index.js"
