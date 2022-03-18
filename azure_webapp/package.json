@@ -2,6 +2,7 @@
   "name": "visualizer",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:5555",
   "dependencies": {
     "@azure/storage-blob": "^12.0.0",
     "@types/jest": "24.0.22",

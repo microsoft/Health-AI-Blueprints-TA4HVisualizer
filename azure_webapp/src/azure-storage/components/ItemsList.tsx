@@ -79,7 +79,7 @@ const ItemsList: React.FC = () => {
                         key: "actions",
                         name: "Actions",
                         onRender: (item: BlobItem) => <Stack horizontal tokens={{childrenGap: 10}}>
-                            <DefaultButton onClick={() => downloadDocument(item.name)}><Icon iconName={"download"}/> Download</DefaultButton>
+                            <DefaultButton onClick={() => downloadDocument(item.name)}><Icon iconName={"download"}/> View</DefaultButton>
                             <DefaultButton onClick={() => deleteDocument(item.name)}><Icon iconName={"delete"}/> Delete</DefaultButton>
                         </Stack>,
                         minWidth: 200
