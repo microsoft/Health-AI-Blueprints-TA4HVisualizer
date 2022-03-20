@@ -79,7 +79,7 @@ const ItemsDownloaded: React.FC = () => {
         <Stack tokens={{childrenGap: 20}} styles={{root: {height: "100%", padding: 30}}}>
           <h2>{modalItem?.filename}</h2>
           <StackItem grow>
-            <iframe src={modalItem?.url} style={{width: "100%", height: "100%", background: "#eaeaea"}}/>
+            <iframe title= "Clinical document" src={modalItem?.url} style={{width: "100%", height: "100%", background: "#eaeaea"}}/>
           </StackItem>
           <Stack horizontal horizontalAlign='end'>
             <DefaultButton styles={{

@@ -37,13 +37,6 @@
                 "description": "Azure FunctionApp name. Has to be unique."
             }
         },
-        "clinicalDocumentsFunctionAppName": {
-            "type": "String",
-            "defaultValue": "[concat('ta4h-structuring-functions', uniqueString(utcNow('F')))]",
-            "metadata":{
-                "description": "Azure Functions name. Has to be unique."
-            }
-        },
         "fhirDocumentsImportFunctionAppName": {
             "type": "String",
             "defaultValue": "[concat('ta4h-fhir-import-functions', uniqueString(utcNow('F')))]",
@@ -107,6 +100,41 @@
             "type": "Microsoft.Storage/storageAccounts",
             "apiVersion": "2021-06-01",
             "name": "[parameters('clinicalDocumentsStorageName')]",
+            "location": "[resourceGroup().location]",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "kind": "Storage",
+            "properties": {
+                "minimumTlsVersion": "TLS1_0",
+                "allowBlobPublicAccess": true,
+                "networkAcls": {
+                    "bypass": "AzureServices",
+                    "virtualNetworkRules": [],
+                    "ipRules": [],
+                    "defaultAction": "Allow"
+                },
+                "supportsHttpsTrafficOnly": true,
+                "encryption": {
+                    "services": {
+                        "file": {
+                            "keyType": "Account",
+                            "enabled": true
+                        },
+                        "blob": {
+                            "keyType": "Account",
+                            "enabled": true
+                        }
+                    },
+                    "keySource": "Microsoft.Storage"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2021-06-01",
+            "name": "[parameters('fhirDocumentsStorageName')]",
             "location": "[resourceGroup().location]",
             "sku": {
                 "name": "Standard_LRS",
@@ -252,234 +280,55 @@
             }
         },
         {
-            "type": "Microsoft.Web/sites/config",
-            "apiVersion": "2021-02-01",
-            "name": "[concat(parameters('visualizerSiteName'), '/web')]",
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2021-03-01",
+            "name": "[parameters('fhirDocumentsImportFunctionAppName')]",
             "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', parameters('visualizerSiteName'))]"
+                "[resourceId('Microsoft.Web/serverfarms/', variables('hostingPlanNameLinux'))]"
             ],
+            "kind": "functionapp",
+            "identity": {
+                "type": "SystemAssigned"
+            },
             "properties": {
-                "numberOfWorkers": 1,
-                "defaultDocuments": [
-                    "Default.htm",
-                    "Default.html",
-                    "Default.asp",
-                    "index.htm",
-                    "index.html",
-                    "iisstart.htm",
-                    "default.aspx",
-                    "index.php",
-                    "hostingstart.html"
-                ],
-                "netFrameworkVersion": "v4.0",
-                "nodeVersion": "~16",
-                "requestTracingEnabled": true,
-                "requestTracingExpirationTime": "9999-12-31T23:59:00Z",
-                "remoteDebuggingEnabled": false,
-                "remoteDebuggingVersion": "VS2019",
-                "httpLoggingEnabled": true,
-                "acrUseManagedIdentityCreds": false,
-                "logsDirectorySizeLimit": 35,
-                "detailedErrorLoggingEnabled": true,
-                "publishingUsername": "$ta4h-vis-webapp",
-                "scmType": "GitHubAction",
-                "use32BitWorkerProcess": true,
-                "webSocketsEnabled": false,
-                "alwaysOn": true,
-                "managedPipelineMode": "Integrated",
-                "virtualApplications": [
+                "enabled": true,
+                "hostNameSslStates": [
                     {
-                        "virtualPath": "/",
-                        "physicalPath": "site\\wwwroot",
-                        "preloadEnabled": true
+                        "name": "[concat(parameters('sites_ta4himporter_name'), '.azurewebsites.net')]",
+                        "sslState": "Disabled",
+                        "hostType": "Standard"
+                    },
+                    {
+                        "name": "[concat(parameters('sites_ta4himporter_name'), '.scm.azurewebsites.net')]",
+                        "sslState": "Disabled",
+                        "hostType": "Repository"
                     }
                 ],
-                "loadBalancing": "LeastRequests",
-                "experiments": {
-                    "rampUpRules": []
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms/', variables('hostingPlanNameLinux'))]",
+                "reserved": false,
+                "isXenon": false,
+                "hyperV": false,
+                "siteConfig": {
+                    "numberOfWorkers": 1,
+                    "acrUseManagedIdentityCreds": false,
+                    "alwaysOn": false,
+                    "http20Enabled": false,
+                    "functionAppScaleLimit": 200,
+                    "minimumElasticInstanceCount": 0
                 },
-                "autoHealEnabled": false,
-                "vnetRouteAllEnabled": false,
-                "vnetPrivatePortsCount": 0,
-                "localMySqlEnabled": false,
-                "ipSecurityRestrictions": [
-                    {
-                        "ipAddress": "Any",
-                        "action": "Allow",
-                        "priority": 1,
-                        "name": "Allow all",
-                        "description": "Allow all access"
-                    }
-                ],
-                "scmIpSecurityRestrictions": [
-                    {
-                        "ipAddress": "Any",
-                        "action": "Allow",
-                        "priority": 1,
-                        "name": "Allow all",
-                        "description": "Allow all access"
-                    }
-                ],
-                "scmIpSecurityRestrictionsUseMain": false,
-                "http20Enabled": false,
-                "minTlsVersion": "1.2",
-                "scmMinTlsVersion": "1.0",
-                "ftpsState": "AllAllowed",
-                "preWarmedInstanceCount": 0,
-                "functionAppScaleLimit": 0,
-                "functionsRuntimeScaleMonitoringEnabled": false,
-                "minimumElasticInstanceCount": 1,
-                "azureStorageAccounts": {}
-            }
-        },
-        {
-            "type": "Microsoft.Web/sites/config",
-            "apiVersion": "2021-02-01",
-            "name": "[concat(parameters('visualizerFunctionAppName'), '/web')]",
-            "location": "[resourceGroup().location]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', parameters('visualizerFunctionAppName'))]"
-            ],
-            "properties": {
-                "numberOfWorkers": 1,
-                "defaultDocuments": [
-                    "Default.htm",
-                    "Default.html",
-                    "Default.asp",
-                    "index.htm",
-                    "index.html",
-                    "iisstart.htm",
-                    "default.aspx",
-                    "index.php"
-                ],
-                "netFrameworkVersion": "v6.0",
-                "phpVersion": "5.6",
-                "requestTracingEnabled": false,
-                "remoteDebuggingEnabled": false,
-                "httpLoggingEnabled": false,
-                "acrUseManagedIdentityCreds": false,
-                "logsDirectorySizeLimit": 35,
-                "detailedErrorLoggingEnabled": false,
-                "publishingUsername": "$VisualizerFunctions",
-                "scmType": "None",
-                "use32BitWorkerProcess": true,
-                "webSocketsEnabled": false,
-                "alwaysOn": false,
-                "managedPipelineMode": "Integrated",
-                "virtualApplications": [
-                    {
-                        "virtualPath": "/",
-                        "physicalPath": "site\\wwwroot",
-                        "preloadEnabled": false
-                    }
-                ],
-                "loadBalancing": "LeastRequests",
-                "experiments": {
-                    "rampUpRules": []
-                },
-                "autoHealEnabled": false,
-                "vnetRouteAllEnabled": false,
-                "vnetPrivatePortsCount": 0,
-                "cors": {
-                    "allowedOrigins": [
-                        "https://ms.portal.azure.com"
-                    ],
-                    "supportCredentials": false
-                },
-                "localMySqlEnabled": false,
-                "ipSecurityRestrictions": [
-                    {
-                        "ipAddress": "Any",
-                        "action": "Allow",
-                        "priority": 1,
-                        "name": "Allow all",
-                        "description": "Allow all access"
-                    }
-                ],
-                "scmIpSecurityRestrictions": [
-                    {
-                        "ipAddress": "Any",
-                        "action": "Allow",
-                        "priority": 1,
-                        "name": "Allow all",
-                        "description": "Allow all access"
-                    }
-                ],
-                "scmIpSecurityRestrictionsUseMain": false,
-                "http20Enabled": false,
-                "minTlsVersion": "1.2",
-                "scmMinTlsVersion": "1.0",
-                "ftpsState": "AllAllowed",
-                "preWarmedInstanceCount": 0,
-                "functionAppScaleLimit": 200,
-                "functionsRuntimeScaleMonitoringEnabled": false,
-                "minimumElasticInstanceCount": 0,
-                "azureStorageAccounts": {}
-            }
-        },
-        {
-            "type": "Microsoft.Web/sites/functions",
-            "apiVersion": "2021-02-01",
-            "name": "[concat(parameters('visualizerFunctionAppName'), '/jsonsToSql')]",
-            "location": "[resourceGroup().location]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', parameters('visualizerFunctionAppName'))]"
-            ],
-            "properties": {
-                "script_root_path_href": "https://visualizerfunctions.azurewebsites.net/admin/vfs/site/wwwroot/jsonsToSql/",
-                "script_href": "https://visualizerfunctions.azurewebsites.net/admin/vfs/site/wwwroot/dist/jsonsToSql/index.js",
-                "config_href": "https://visualizerfunctions.azurewebsites.net/admin/vfs/site/wwwroot/jsonsToSql/function.json",
-                "test_data_href": "https://visualizerfunctions.azurewebsites.net/admin/vfs/data/Functions/sampledata/jsonsToSql.dat",
-                "href": "https://visualizerfunctions.azurewebsites.net/admin/functions/jsonsToSql",
-                "config": {},
-                "language": "node",
-                "isDisabled": false
-            }
-        },
-        {
-            "type": "Microsoft.Web/sites/functions",
-            "apiVersion": "2021-02-01",
-            "name": "[concat(parameters('visualizerFunctionAppName'), '/medicalTextsToJsons')]",
-            "location": "[resourceGroup().location]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', parameters('visualizerFunctionAppName'))]"
-            ],
-            "properties": {
-                "script_root_path_href": "https://visualizerfunctions.azurewebsites.net/admin/vfs/site/wwwroot/medicalTextsToJsons/",
-                "script_href": "https://visualizerfunctions.azurewebsites.net/admin/vfs/site/wwwroot/dist/medicalTextsToJsons/index.js",
-                "config_href": "https://visualizerfunctions.azurewebsites.net/admin/vfs/site/wwwroot/medicalTextsToJsons/function.json",
-                "test_data_href": "https://visualizerfunctions.azurewebsites.net/admin/vfs/data/Functions/sampledata/medicalTextsToJsons.dat",
-                "href": "https://visualizerfunctions.azurewebsites.net/admin/functions/medicalTextsToJsons",
-                "config": {},
-                "language": "node",
-                "isDisabled": false
-            }
-        },
-        {
-            "type": "Microsoft.Web/sites/hostNameBindings",
-            "apiVersion": "2021-02-01",
-            "name": "[concat(parameters('visualizerSiteName'), '/', parameters('visualizerSiteName'), '.azurewebsites.net')]",
-            "location": "[resourceGroup().location]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', parameters('visualizerSiteName'))]"
-            ],
-            "properties": {
-                "visualizerSiteName": "ta4h-vis-webapp",
-                "hostNameType": "Verified"
-            }
-        },
-        {
-            "type": "Microsoft.Web/sites/hostNameBindings",
-            "apiVersion": "2021-02-01",
-            "name": "[concat(parameters('visualizerFunctionAppName'), '/', parameters('visualizerFunctionAppName'), '.azurewebsites.net')]",
-            "location": "[resourceGroup().location]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', parameters('visualizerFunctionAppName'))]"
-            ],
-            "properties": {
-                "visualizerSiteName": "VisualizerFunctions",
-                "hostNameType": "Verified"
+                "scmSiteAlsoStopped": false,
+                "clientAffinityEnabled": false,
+                "clientCertEnabled": false,
+                "clientCertMode": "Required",
+                "hostNamesDisabled": false,
+                "customDomainVerificationId": "40B8747EBF0B70401143CCB79B75476F6199C7DABBF7C8B298A43D988738D5AC",
+                "containerSize": 1536,
+                "dailyMemoryTimeQuota": 0,
+                "httpsOnly": false,
+                "redundancyMode": "None",
+                "storageAccountRequired": false,
+                "keyVaultReferenceIdentity": "SystemAssigned"
             }
         },
         {
@@ -501,7 +350,7 @@
         {
             "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
             "apiVersion": "2021-06-01",
-            "name": "[concat(parameters('clinicalDocumentsStorageName'), '/default/medical-jsons-output')]",
+            "name": "[concat(parameters('clinicalDocumentsStorageName'), '/default/azure-webjobs-hosts')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Storage/storageAccounts', parameters('clinicalDocumentsStorageName'))]"
             ],
@@ -520,6 +369,54 @@
             "name": "[concat(parameters('clinicalDocumentsStorageName'), '/default/medical-texts-input')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Storage/storageAccounts', parameters('clinicalDocumentsStorageName'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('fhirDocumentsStorageName'), '/default/azure-webjobs-secrets')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('fhirDocumentsStorageName'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('fhirDocumentsStorageName'), '/default/azure-webjobs-hosts')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('fhirDocumentsStorageName'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('fhirDocumentsStorageName'), '/default/fhir-import')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('fhirDocumentsStorageName'))]"
             ],
             "properties": {
                 "immutableStorageWithVersioning": {
