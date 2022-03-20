@@ -3,14 +3,14 @@ import { TextAnalyticsClient, AzureKeyCredential } from "@azure/ai-text-analytic
 
 
 const blobTrigger: AzureFunction = async function (context: Context, myBlob: any): Promise<void> {
-    
+
     context.log("Blob trigger function processed blob \n Name:", context.bindingData.name, "\n Blob Size:", myBlob.length, "Bytes");
 
     // You will need to set these environment variables or edit the following values
     const endpoint = process.env.TA_ENDPOINT;
     const apiKey = process.env.TA_API_KEY;
     const algVersion = 0.1;
-    
+
     const documents = myBlob.toString().match(/(.{1,5120})/gs);
 
     async function callTextAnalytics() {
@@ -50,7 +50,7 @@ const blobTrigger: AzureFunction = async function (context: Context, myBlob: any
             }
         }
         return consolidatedOutput;
-        
+
     }
 
     function trimDataSources(dataSources: any){
@@ -86,7 +86,7 @@ const blobTrigger: AzureFunction = async function (context: Context, myBlob: any
 
         return tempEntity;
     }
-    
+
     const textAnalyticsResponse: any = await callTextAnalytics().catch((err) => {
         context.log("The sample encountered an error:", err);
     });
@@ -117,7 +117,7 @@ const blobTrigger: AzureFunction = async function (context: Context, myBlob: any
         }
         // map and clean
         entity = mapAndClean(entity);
-        
+
         // remove entity length as it is not needed
         delete entity.length;
 
@@ -151,7 +151,7 @@ const blobTrigger: AzureFunction = async function (context: Context, myBlob: any
             categorisedOutput.medications.push(entity);
         }
     });
-    
+
     // sort entities by confidence score
     Object.keys(categorisedOutput).forEach((key) =>{
         if (categorisedOutput[key].length > 0){

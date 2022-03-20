@@ -2,38 +2,56 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "vulnerabilityAssessments_Default_storageContainerPath": {
-            "type": "SecureString"
-        },
-        "accounts_ta_visualizer_name": {
+        "textAnalyticsForHealthServiceName": {
             "type": "String",
             "defaultValue": "[concat('ta4h', uniqueString(utcNow('F')))]",
             "metadata":{
                 "description": "Azure TextAnalytics Service name. Has to be unique."
             }
         },
-        "storageAccounts_medicaltextsstorage_name": {
+        "clinicalDocumentsStorageName": {
             "type": "String",
             "defaultValue": "[concat('ta4hstorage', uniqueString(utcNow('F')))]",
             "metadata":{
                 "description": "Azure StorageAccount name. Has to be unique."
             }
         },
-        "sites_ta4h_fhir_visualizer_name": {
+        "fhirDocumentsStorageName": {
             "type": "String",
-            "defaultValue": "[concat('ta4h-fhir-visualizer', uniqueString(utcNow('F')))]",
+            "defaultValue": "[concat('fhirstorage', uniqueString(utcNow('F')))]",
+            "metadata":{
+                "description": "Azure StorageAccount name. Has to be unique."
+            }
+        },
+        "visualizerSiteName": {
+            "type": "String",
+            "defaultValue": "[concat('ta4h-fhir-vis-', uniqueString(utcNow('F')))]",
             "metadata":{
                 "description": "Azure WebApp site name. Has to be unique."
             }
         },
-        "sites_vis_functions_name": {
+        "visualizerFunctionAppName": {
             "type": "String",
-            "defaultValue": "[concat('vis-functions', uniqueString(utcNow('F')))]",
+            "defaultValue": "[concat('ta4h-fhir-functions-', uniqueString(utcNow('F')))]",
             "metadata":{
-                "description": "Azure FunctionApps name. Has to be unique."
+                "description": "Azure FunctionApp name. Has to be unique."
             }
         },
-        "skuName": {
+        "clinicalDocumentsFunctionAppName": {
+            "type": "String",
+            "defaultValue": "[concat('ta4h-structuring-functions', uniqueString(utcNow('F')))]",
+            "metadata":{
+                "description": "Azure Functions name. Has to be unique."
+            }
+        },
+        "fhirDocumentsImportFunctionAppName": {
+            "type": "String",
+            "defaultValue": "[concat('ta4h-fhir-import-functions', uniqueString(utcNow('F')))]",
+            "metadata":{
+                "description": "Azure Functions name. Has to be unique."
+            }
+        },
+        "webappSkuName": {
             "type": "string",
             "defaultValue": "P1V2",
             "allowedValues": [
@@ -45,18 +63,18 @@
                 "description": "Describes plan's pricing tier and instance size. Check details at https://azure.microsoft.com/en-us/pricing/details/app-service/"
             }
         },
-        "serverfarms_ASP_TA4HVisualizer_8f8d_name": {
-            "defaultValue": "ASP-TA4HVisualizer-8f8d",
-            "type": "String"
+        "functionAppSkuName": {
+            "type": "string",
+            "defaultValue": "Consumption (Serverless)",
+            "allowedValues": [
+                "Consumption (Serverless)",
+                "Functions Premium"
+            ],
+            "metadata": {
+                "description": "Describes plan's pricing tier"
+            }
         },
-        "serverfarms_ASP_TA4HVisualizer_b33f_name": {
-            "defaultValue": "ASP-TA4HVisualizer-b33f",
-            "type": "String"
-        },
-        "storageAccounts_storageaccountta4hv9d66_name": {
-            "defaultValue": "storageaccountta4hv9d66",
-            "type": "String"
-        },
+
         "siteLocation": {
             "type": "string",
             "defaultValue": "[resourceGroup().location]",
@@ -66,29 +84,30 @@
         }
     },
     "variables": {
-        "skuCode": "[parameters('skuName')]"
+        "skuCode": "[parameters('webappSkuName')]",
+        "hostingPlanNameLinux": "[concat('plan-linux-', parameters('visualizerSiteName'))]"
     },
     "resources": [
         {
             "type": "Microsoft.CognitiveServices/accounts",
             "apiVersion": "2021-10-01",
-            "name": "[parameters('accounts_ta_visualizer_name')]",
-            "location": "eastus",
+            "name": "[parameters('textAnalyticsForHealthServiceName')]",
+            "location": "[resourceGroup().location]",
             "sku": {
                 "name": "S"
             },
             "kind": "TextAnalytics",
             "properties": {
                 "apiProperties": {},
-                "customSubDomainName": "[parameters('accounts_ta_visualizer_name')]",
+                "customSubDomainName": "[parameters('textAnalyticsForHealthServiceName')]",
                 "publicNetworkAccess": "Enabled"
             }
         },
         {
             "type": "Microsoft.Storage/storageAccounts",
             "apiVersion": "2021-06-01",
-            "name": "[parameters('storageAccounts_medicaltextsstorage_name')]",
-            "location": "eastus",
+            "name": "[parameters('clinicalDocumentsStorageName')]",
+            "location": "[resourceGroup().location]",
             "sku": {
                 "name": "Standard_LRS",
                 "tier": "Standard"
@@ -121,7 +140,6 @@
         },
         {
             "apiVersion": "2018-02-01",
-            "condition": "[equals(parameters('operatingSystem'),'linux')]",
             "name": "[variables('hostingPlanNameLinux')]",
             "type": "Microsoft.Web/serverfarms",
             "location": "[parameters('siteLocation')]",
@@ -131,60 +149,34 @@
             },
             "properties": {
                 "name": "[variables('hostingPlanNameLinux')]",
-                "numberOfWorkers": "[variables('numberOfWorkers')]",
+                "numberOfWorkers": "1",
                 "reserved": true
-            }
-        },
-        {
-            "type": "Microsoft.Web/serverfarms",
-            "apiVersion": "2021-02-01",
-            "name": "[parameters('serverfarms_ASP_TA4HVisualizer_b33f_name')]",
-            "location": "East US",
-            "sku": {
-                "name": "P2v2",
-                "tier": "PremiumV2",
-                "size": "P2v2",
-                "family": "Pv2",
-                "capacity": 1
-            },
-            "kind": "app",
-            "properties": {
-                "perSiteScaling": false,
-                "elasticScaleEnabled": false,
-                "maximumElasticWorkerCount": 1,
-                "isSpot": false,
-                "reserved": false,
-                "isXenon": false,
-                "hyperV": false,
-                "targetWorkerCount": 0,
-                "targetWorkerSizeId": 0,
-                "zoneRedundant": false
             }
         },
         {
             "type": "Microsoft.Web/sites",
             "apiVersion": "2021-02-01",
-            "name": "[parameters('sites_ta4h_fhir_visualizer_name')]",
+            "name": "[parameters('visualizerSiteName')]",
             "location": "[parameters('siteLocation')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ASP_TA4HVisualizer_b33f_name'))]"
+                "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanNameLinux'))]"
             ],
             "kind": "app",
             "properties": {
                 "enabled": true,
                 "hostNameSslStates": [
                     {
-                        "name": "[concat(parameters('sites_ta4h_fhir_visualizer_name'), '.azurewebsites.net')]",
+                        "name": "[concat(parameters('visualizerSiteName'), '.azurewebsites.net')]",
                         "sslState": "Disabled",
                         "hostType": "Standard"
                     },
                     {
-                        "name": "[concat(parameters('sites_ta4h_fhir_visualizer_name'), '.scm.azurewebsites.net')]",
+                        "name": "[concat(parameters('visualizerSiteName'), '.scm.azurewebsites.net')]",
                         "sslState": "Disabled",
                         "hostType": "Repository"
                     }
                 ],
-                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ASP_TA4HVisualizer_b33f_name'))]",
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanNameLinux'))]",
                 "reserved": false,
                 "isXenon": false,
                 "hyperV": false,
@@ -213,10 +205,10 @@
         {
             "type": "Microsoft.Web/sites",
             "apiVersion": "2021-02-01",
-            "name": "[parameters('sites_VisualizerFunctions_name')]",
-            "location": "East US",
+            "name": "[parameters('visualizerFunctionAppName')]",
+            "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ASP_TA4HVisualizer_8f8d_name'))]"
+                "[resourceId('Microsoft.Web/serverfarms/', variables('hostingPlanNameLinux'))]"
             ],
             "kind": "functionapp",
             "properties": {
@@ -233,7 +225,7 @@
                         "hostType": "Repository"
                     }
                 ],
-                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ASP_TA4HVisualizer_8f8d_name'))]",
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms/', variables('hostingPlanNameLinux'))]",
                 "reserved": false,
                 "isXenon": false,
                 "hyperV": false,
@@ -262,10 +254,10 @@
         {
             "type": "Microsoft.Web/sites/config",
             "apiVersion": "2021-02-01",
-            "name": "[concat(parameters('sites_ta4h_fhir_visualizer_name'), '/web')]",
-            "location": "East US",
+            "name": "[concat(parameters('visualizerSiteName'), '/web')]",
+            "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', parameters('sites_ta4h_fhir_visualizer_name'))]"
+                "[resourceId('Microsoft.Web/sites', parameters('visualizerSiteName'))]"
             ],
             "properties": {
                 "numberOfWorkers": 1,
@@ -344,10 +336,10 @@
         {
             "type": "Microsoft.Web/sites/config",
             "apiVersion": "2021-02-01",
-            "name": "[concat(parameters('sites_VisualizerFunctions_name'), '/web')]",
-            "location": "East US",
+            "name": "[concat(parameters('visualizerFunctionAppName'), '/web')]",
+            "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', parameters('sites_VisualizerFunctions_name'))]"
+                "[resourceId('Microsoft.Web/sites', parameters('visualizerFunctionAppName'))]"
             ],
             "properties": {
                 "numberOfWorkers": 1,
@@ -429,10 +421,10 @@
         {
             "type": "Microsoft.Web/sites/functions",
             "apiVersion": "2021-02-01",
-            "name": "[concat(parameters('sites_VisualizerFunctions_name'), '/jsonsToSql')]",
-            "location": "East US",
+            "name": "[concat(parameters('visualizerFunctionAppName'), '/jsonsToSql')]",
+            "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', parameters('sites_VisualizerFunctions_name'))]"
+                "[resourceId('Microsoft.Web/sites', parameters('visualizerFunctionAppName'))]"
             ],
             "properties": {
                 "script_root_path_href": "https://visualizerfunctions.azurewebsites.net/admin/vfs/site/wwwroot/jsonsToSql/",
@@ -448,10 +440,10 @@
         {
             "type": "Microsoft.Web/sites/functions",
             "apiVersion": "2021-02-01",
-            "name": "[concat(parameters('sites_VisualizerFunctions_name'), '/medicalTextsToJsons')]",
-            "location": "East US",
+            "name": "[concat(parameters('visualizerFunctionAppName'), '/medicalTextsToJsons')]",
+            "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', parameters('sites_VisualizerFunctions_name'))]"
+                "[resourceId('Microsoft.Web/sites', parameters('visualizerFunctionAppName'))]"
             ],
             "properties": {
                 "script_root_path_href": "https://visualizerfunctions.azurewebsites.net/admin/vfs/site/wwwroot/medicalTextsToJsons/",
@@ -467,36 +459,35 @@
         {
             "type": "Microsoft.Web/sites/hostNameBindings",
             "apiVersion": "2021-02-01",
-            "name": "[concat(parameters('sites_ta4h_fhir_visualizer_name'), '/', parameters('sites_ta4h_fhir_visualizer_name'), '.azurewebsites.net')]",
-            "location": "East US",
+            "name": "[concat(parameters('visualizerSiteName'), '/', parameters('visualizerSiteName'), '.azurewebsites.net')]",
+            "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', parameters('sites_ta4h_fhir_visualizer_name'))]"
+                "[resourceId('Microsoft.Web/sites', parameters('visualizerSiteName'))]"
             ],
             "properties": {
-                "siteName": "ta4h-vis-webapp",
+                "visualizerSiteName": "ta4h-vis-webapp",
                 "hostNameType": "Verified"
             }
         },
         {
             "type": "Microsoft.Web/sites/hostNameBindings",
             "apiVersion": "2021-02-01",
-            "name": "[concat(parameters('sites_VisualizerFunctions_name'), '/', parameters('sites_VisualizerFunctions_name'), '.azurewebsites.net')]",
-            "location": "East US",
+            "name": "[concat(parameters('visualizerFunctionAppName'), '/', parameters('visualizerFunctionAppName'), '.azurewebsites.net')]",
+            "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', parameters('sites_VisualizerFunctions_name'))]"
+                "[resourceId('Microsoft.Web/sites', parameters('visualizerFunctionAppName'))]"
             ],
             "properties": {
-                "siteName": "VisualizerFunctions",
+                "visualizerSiteName": "VisualizerFunctions",
                 "hostNameType": "Verified"
             }
         },
         {
             "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
             "apiVersion": "2021-06-01",
-            "name": "[concat(parameters('storageAccounts_medicaltextsstorage_name'), '/default/azure-webjobs-hosts')]",
+            "name": "[concat(parameters('clinicalDocumentsStorageName'), '/default/azure-webjobs-secrets')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_medicaltextsstorage_name'), 'default')]",
-                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_medicaltextsstorage_name'))]"
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('clinicalDocumentsStorageName'))]"
             ],
             "properties": {
                 "immutableStorageWithVersioning": {
@@ -510,10 +501,9 @@
         {
             "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
             "apiVersion": "2021-06-01",
-            "name": "[concat(parameters('storageAccounts_storageaccountta4hv9d66_name'), '/default/azure-webjobs-hosts')]",
+            "name": "[concat(parameters('clinicalDocumentsStorageName'), '/default/medical-jsons-output')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_storageaccountta4hv9d66_name'), 'default')]",
-                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_storageaccountta4hv9d66_name'))]"
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('clinicalDocumentsStorageName'))]"
             ],
             "properties": {
                 "immutableStorageWithVersioning": {
@@ -527,61 +517,9 @@
         {
             "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
             "apiVersion": "2021-06-01",
-            "name": "[concat(parameters('storageAccounts_storageaccountta4hv9d66_name'), '/default/azure-webjobs-secrets')]",
+            "name": "[concat(parameters('clinicalDocumentsStorageName'), '/default/medical-texts-input')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_storageaccountta4hv9d66_name'), 'default')]",
-                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_storageaccountta4hv9d66_name'))]"
-            ],
-            "properties": {
-                "immutableStorageWithVersioning": {
-                    "enabled": false
-                },
-                "defaultEncryptionScope": "$account-encryption-key",
-                "denyEncryptionScopeOverride": false,
-                "publicAccess": "None"
-            }
-        },
-        {
-            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
-            "apiVersion": "2021-06-01",
-            "name": "[concat(parameters('storageAccounts_medicaltextsstorage_name'), '/default/medical-jsons-output')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_medicaltextsstorage_name'), 'default')]",
-                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_medicaltextsstorage_name'))]"
-            ],
-            "properties": {
-                "immutableStorageWithVersioning": {
-                    "enabled": false
-                },
-                "defaultEncryptionScope": "$account-encryption-key",
-                "denyEncryptionScopeOverride": false,
-                "publicAccess": "None"
-            }
-        },
-        {
-            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
-            "apiVersion": "2021-06-01",
-            "name": "[concat(parameters('storageAccounts_medicaltextsstorage_name'), '/default/medical-texts-input')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_medicaltextsstorage_name'), 'default')]",
-                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_medicaltextsstorage_name'))]"
-            ],
-            "properties": {
-                "immutableStorageWithVersioning": {
-                    "enabled": false
-                },
-                "defaultEncryptionScope": "$account-encryption-key",
-                "denyEncryptionScopeOverride": false,
-                "publicAccess": "None"
-            }
-        },
-        {
-            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
-            "apiVersion": "2021-06-01",
-            "name": "[concat(parameters('storageAccounts_medicaltextsstorage_name'), '/default/test')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_medicaltextsstorage_name'), 'default')]",
-                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_medicaltextsstorage_name'))]"
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('clinicalDocumentsStorageName'))]"
             ],
             "properties": {
                 "immutableStorageWithVersioning": {

@@ -46,27 +46,27 @@ function getSQL(context, myBlob) {
     if (sqlCommand.length <= 4) return '';
     return sqlCommand;
 }
-       
+
 
 function addReports(myBlobObj, output_id) {
     return `INSERT INTO [dbo].reports VALUES (${output_id}, ${parsePotentiallyGroupedFloat(myBlobObj.output_date)}, ${myBlobObj.output_alg_version}, ${myBlobObj.patient?.dob || 0 }, '${myBlobObj.patient?.gender || 'U' }', ${parsePotentiallyGroupedFloat(myBlobObj.event_date)}, '${myBlobObj.output_id}')`
 }
 
 function addAttributes(myBlobObj, attribute, output_id) {
-    if (!myBlobObj[attribute]) return '';         
-    const arr = myBlobObj[attribute]; 
+    if (!myBlobObj[attribute]) return '';
+    const arr = myBlobObj[attribute];
     let res = '';
-    
+
     for (let i = 0; i < arr.length; i++) {
-        let text = (arr[i].text || '').replace(/[^a-zA-Z ]/g, ""); 
-        let name = (arr[i].name || '').replace(/[^a-zA-Z ]/g, ""); 
+        let text = (arr[i].text || '').replace(/[^a-zA-Z ]/g, "");
+        let name = (arr[i].name || '').replace(/[^a-zA-Z ]/g, "");
         let confidence_score = parseInt(arr[i].confidence_score || arr[i].confidenceScore || 0).toFixed(3) || 0;
         let certainty = (arr[i].certainty || '').replace(/[^a-zA-Z ]/g, "");
         let inner = `${output_id}, '${text}', '${name}', '${confidence_score}', '${certainty}'`;
         res += `(${inner}),`;
     }
 
-    if (arr.length == 0) return '';	
+    if (arr.length == 0) return '';
     return `INSERT INTO [dbo].${attribute} (output_id, text, name, confidence_score, certainty) VALUES ${res.slice(0, -1)}`;
 }
 
@@ -105,9 +105,9 @@ String.prototype['hashCode'] = function() {
     }
     return hash;
   };
-  
 
-const executeSQL = sql => new Promise((resolve, reject) => {     
+
+const executeSQL = sql => new Promise((resolve, reject) => {
     // Create connection to database
     const connection = new Connection(config);
     const request = new Request(sql, (err) => {
@@ -115,8 +115,8 @@ const executeSQL = sql => new Promise((resolve, reject) => {
             reject(err);
         } else {
             resolve("[]");
-        }       
-    });    
+        }
+    });
 
     connection.on('connect', (err) => {
         if (err) {
@@ -125,7 +125,7 @@ const executeSQL = sql => new Promise((resolve, reject) => {
         else {
             connection.execSql(request);
         }
-    });   
+    });
 
-    connection.connect();    
+    connection.connect();
 });
