@@ -103,8 +103,7 @@
     "variables": {
         "skuCode": "[parameters('webappSku')]",
         "hostingPlanNameLinux": "[concat('plan-linux-', parameters('visualizerSiteName'))]",
-        "visualizerStorageAccount": "[resourceId('Microsoft.Storage/storageAccounts', parameters('clinicalDocumentsStorageName'))]",
-        "linuxFxVersion": "NODE|lts"
+        "visualizerStorageAccount": "[resourceId('Microsoft.Storage/storageAccounts', parameters('clinicalDocumentsStorageName'))]"
     },
     "resources": [
         {
@@ -220,7 +219,6 @@
             "properties": {
                 "name": "[parameters('visualizerSiteName')]",
                 "siteConfig": {
-                    "linuxFxVersion": "[variables('linuxFxVersion')]",
                     "alwaysOn": true,
                     "appSettings": [
                         {
