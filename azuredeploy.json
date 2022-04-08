@@ -303,18 +303,6 @@
             },
             "properties": {
                 "enabled": true,
-                "hostNameSslStates": [
-                    {
-                        "name": "[concat(parameters('sites_ta4himporter_name'), '.azurewebsites.net')]",
-                        "sslState": "Disabled",
-                        "hostType": "Standard"
-                    },
-                    {
-                        "name": "[concat(parameters('sites_ta4himporter_name'), '.scm.azurewebsites.net')]",
-                        "sslState": "Disabled",
-                        "hostType": "Repository"
-                    }
-                ],
                 "serverFarmId": "[resourceId('Microsoft.Web/serverfarms/', variables('hostingPlanNameLinux'))]",
                 "reserved": false,
                 "isXenon": false,
@@ -332,7 +320,6 @@
                 "clientCertEnabled": false,
                 "clientCertMode": "Required",
                 "hostNamesDisabled": false,
-                "customDomainVerificationId": "40B8747EBF0B70401143CCB79B75476F6199C7DABBF7C8B298A43D988738D5AC",
                 "containerSize": 1536,
                 "dailyMemoryTimeQuota": 0,
                 "httpsOnly": false,
@@ -442,9 +429,6 @@
             "apiVersion": "2021-06-01-preview",
             "name": "[parameters('healthDataServicesWorkspace')]",
             "location": "[resourceGroup().location]",
-            "properties": {
-                "provisioningState": "Succeeded"
-            }
         },
         {
             "type": "Microsoft.HealthcareApis/workspaces/fhirservices",
