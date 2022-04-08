@@ -39,14 +39,14 @@
         },
         "fhirDocumentsImportFunctionAppName": {
             "type": "String",
-            "defaultValue": "[concat('ta4h-fhir-import-functions', uniqueString(utcNow('F')))]",
+            "defaultValue": "[concat('ta4h-fhir-import-functions-', uniqueString(utcNow('F')))]",
             "metadata":{
                 "description": "Azure Functions name. Has to be unique."
             }
         },
         "healthDataServicesWorkspace": {
             "type": "String",
-            "defaultValue": "[concat('ta4h-fhir-server-workspace1', uniqueString(utcNow('F')))]",
+            "defaultValue": "[concat('fhirapi', uniqueString(utcNow('F')))]",
             "metadata":{
                 "description": "Azure Health Data Services workspace. Has to be unique."
             }
@@ -280,13 +280,11 @@
                 "clientCertEnabled": false,
                 "clientCertMode": "Required",
                 "hostNamesDisabled": false,
-                "customDomainVerificationId": "40B8747EBF0B70401143CCB79B75476F6199C7DABBF7C8B298A43D988738D5AC",
                 "containerSize": 1536,
                 "dailyMemoryTimeQuota": 0,
                 "httpsOnly": false,
                 "redundancyMode": "None",
-                "storageAccountRequired": false,
-                "keyVaultReferenceIdentity": "SystemAssigned"
+                "storageAccountRequired": false
             }
         },
         {
@@ -428,7 +426,7 @@
             "type": "Microsoft.HealthcareApis/workspaces",
             "apiVersion": "2021-06-01-preview",
             "name": "[parameters('healthDataServicesWorkspace')]",
-            "location": "[resourceGroup().location]",
+            "location": "[resourceGroup().location]"
         },
         {
             "type": "Microsoft.HealthcareApis/workspaces/fhirservices",
@@ -455,8 +453,7 @@
                     "methods": [],
                     "allowCredentials": false
                 },
-                "exportConfiguration": {},
-                "provisioningState": "Succeeded"
+                "exportConfiguration": {}
             }
         }
     ]
