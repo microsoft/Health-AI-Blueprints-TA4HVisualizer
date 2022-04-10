@@ -6,6 +6,7 @@
   "license": "MIT",
   "repository": "https://github.com/microsoft/Health-AI-Blueprints-TA4HVisualizer.git",
   "scripts": {
+    "preinstall": "cd azure_webapp && npm install && npm run build",
     "start": "node server.js"
   },
   "author": "",
