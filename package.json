@@ -9,6 +9,10 @@
     "preinstall": "cd azure_webapp && npm install && npm run build",
     "start": "node server.js"
   },
+  "engines" : {
+    "npm" : ">=7.0.0",
+    "node" : ">=16.0.0"
+  },
   "author": "",
   "dependencies": {
     "cors": "^2.8.5",
