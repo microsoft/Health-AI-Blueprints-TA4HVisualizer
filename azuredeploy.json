@@ -88,6 +88,7 @@
         "repoUrl": {
             "type": "string",
             "defaultValue": "https://github.com/microsoft/Health-AI-Blueprints-TA4HVisualizer.git",
+            "functionApp":"https://github.com/microsoft/Health-AI-Blueprints-TA4HVisualizer/tree/main/azure_functions",
             "metadata": {
                 "description": "The URL for the GitHub repository that contains the project to deploy."
             }
@@ -154,6 +155,49 @@
                         }
                     },
                     "keySource": "Microsoft.Storage"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices",
+            "apiVersion": "2021-08-01",
+            "name": "[concat(parameters('clinicalDocumentsStorageName'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('clinicalDocumentsStorageName'))]"
+            ],
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "properties": {
+                "cors": {
+                    "corsRules": [
+                        {
+                            "allowedOrigins": [
+                                "*"
+                            ],
+                            "allowedMethods": [
+                                "GET",
+                                "DELETE",
+                                "HEAD",
+                                "MERGE",
+                                "POST",
+                                "OPTIONS",
+                                "PUT",
+                                "PATCH"
+                            ],
+                            "maxAgeInSeconds": 200,
+                            "exposedHeaders": [
+                                "content-length"
+                            ],
+                            "allowedHeaders": [
+                                "*"
+                            ]
+                        }
+                    ]
+                },
+                "deleteRetentionPolicy": {
+                    "enabled": false
                 }
             }
         },
