@@ -11,10 +11,10 @@ Utilize the Visualizer tool to extract insights from unstructured medical text. 
  <br>
 
 
-### Dashboard:
+## Dashboard
 ![Sample Dashboard](https://github.com/microsoft/Health-AI-Blueprints-TA4HVisualizer/blob/main/img11.png)
 
-### High Level Architecture:
+## High Level Architecture
 ![Architecture](https://github.com/microsoft/Health-AI-Blueprints-TA4HVisualizer/blob/main/img12.png)
 
 ## Deployment
