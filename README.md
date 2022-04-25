@@ -23,7 +23,7 @@ Utilize the Visualizer tool to extract insights from unstructured medical text. 
 
 **1. Deploy "Green path" pipeline(step 1):**<br>
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fpazinio%2FHealth-AI-Blueprints-TA4HVisualizer%2Fmain%2Fazuredeploy.json)
-<br>To deploy the Azure Web App, Azure Storage Account, Azure Text Analytics for Health, Azure Health Dat Services and Azure Function App, use the button below to deploy through the Azure Portal. <br>
+<br>To deploy the Azure Web App, Azure Storage Account, Azure Function App, Azure Text Analytics for Health and Azure Health Data Services<br>
 
 **2. "Green path" pipeline(step 2): Azure Function deployment to import JSON files to your FHIR Server**:<br>
 https://github.com/microsoft/healthcare-apis-samples/tree/main/src/FhirImporter
