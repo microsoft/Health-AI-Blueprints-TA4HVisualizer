@@ -306,7 +306,7 @@
                         "[resourceId('Microsoft.Web/sites', parameters('visualizerSiteName'))]"
                     ],
                     "properties": {
-                        "repoUrl": "[parameters('repoUrl')]",
+                        "repoUrl": "[parameters('repoURL')]",
                         "branch": "[parameters('branch')]",
                         "isManualIntegration": true
                     }
