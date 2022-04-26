@@ -16,9 +16,12 @@ const blobTrigger: AzureFunction = async function (context: Context, myBlob: any
         isAutoLanguageDetectionEnabled: false
     }));
 
-    const structuringEndpoint = process.env.TA_FHIR_STRUCTURING_ENDPOINT + '/language/analyze-text/jobs?api-version=2022-04-01-preview';
+    const structuringEndpoint = process.env.TA_FHIR_STRUCTURING_RESOURCE_NAME + '.cognitiveservices.azure.com/language/analyze-text/jobs?api-version=2022-04-01-preview';
     const config = {
-        headers: { 'content-Type': 'application/json' },
+        headers: {
+            'content-Type': 'application/json',
+            'Ocp-Apim-Subscription-Key': process.env.TA_API_KEY
+        },
         params:  { structureFHIR: true }
     };
     // const data = {body: { documents: documents }};

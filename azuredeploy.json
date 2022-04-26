@@ -334,8 +334,8 @@
                             "value": "[listKeys(variables('textAnalyticsForHealthServiceId'),'2022-03-01').key1]"
                         },
                         {
-                            "name": "TA_FHIR_STRUCTURING_ENDPOINT",
-                            "value": "[listKeys(variables('textAnalyticsForHealthServiceId'),'2022-03-01').endpoint]"
+                            "name": "TA_FHIR_STRUCTURING_RESOURCE_NAME",
+                            "value": "[parameters('textAnalyticsForHealthServiceName')]"
                         }
                     ],
                     "numberOfWorkers": 1,
