@@ -85,7 +85,7 @@
                 "description": "Describes plan's pricing tier"
             }
         },
-        "repoURL": {
+        "repoUrl": {
             "type": "string",
             "defaultValue": "https://github.com/microsoft/Health-AI-Blueprints-TA4HVisualizer.git",
             "metadata": {
@@ -306,7 +306,7 @@
                         "[resourceId('Microsoft.Web/sites', parameters('visualizerSiteName'))]"
                     ],
                     "properties": {
-                        "repoUrl": "[parameters('repoURL')]",
+                        "repoUrl": "[parameters('repoUrl')]",
                         "branch": "[parameters('branch')]",
                         "isManualIntegration": true
                     }
