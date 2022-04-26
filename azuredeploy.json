@@ -361,10 +361,11 @@
                     ],
                     "numberOfWorkers": 1,
                     "acrUseManagedIdentityCreds": false,
+                    "linuxFxVersion": "NODE|14",
                     "alwaysOn": false,
                     "http20Enabled": false,
                     "functionAppScaleLimit": 200,
-                    "minimumElasticInstanceCount": 0
+                    "minimumElasticInstanceCount": 1
                 },
                 "scmSiteAlsoStopped": false,
                 "clientAffinityEnabled": false,
