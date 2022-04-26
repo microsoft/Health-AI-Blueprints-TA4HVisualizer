@@ -94,7 +94,7 @@
         },
         "repoUrlFunction": {
             "type": "string",
-            "defaultValue": "https://github.com/microsoft/Health-AI-Blueprints-TA4HVisualizer/tree/main/azure_functions",
+            "defaultValue": "https://github.com/microsoft/Health-AI-Blueprints-TA4HVisualizer/tree/main/azure_functions/azure_functions.zip",
             "metadata": {
                 "description": "The URL for the GitHub repository that contains the project to deploy."
             }
@@ -298,7 +298,7 @@
                         "[resourceId('Microsoft.Web/sites', parameters('visualizerSiteName'))]"
                     ],
                     "properties": {
-                        "repoUrl": "[parameters('repoURL')]",
+                        "repoUrl": "[parameters('repoUrl')]",
                         "branch": "[parameters('branch')]",
                         "isManualIntegration": true
                     }
@@ -332,6 +332,10 @@
                         {
                             "name": "TA_API_KEY",
                             "value": "[listKeys(variables('textAnalyticsForHealthServiceId'),'2022-03-01').key1]"
+                        },
+                        {
+                            "name": "TA_FHIR_STRUCTURING_ENDPOINT",
+                            "value": "[listKeys(variables('textAnalyticsForHealthServiceId'),'2022-03-01').endpoint]"
                         }
                     ],
                     "numberOfWorkers": 1,
@@ -362,7 +366,7 @@
                         "[resourceId('Microsoft.Web/sites', parameters('visualizerFunctionAppName'))]"
                     ],
                     "properties": {
-                        "repoUrl": "[parameters('repoURLFunction')]",
+                        "repoUrl": "[parameters('repoUrlFunction')]",
                         "branch": "[parameters('branch')]",
                         "isManualIntegration": true
                     }
