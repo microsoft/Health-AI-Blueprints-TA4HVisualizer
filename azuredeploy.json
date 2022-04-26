@@ -282,14 +282,6 @@
                         {
                             "name": "STORAGE_KEY",
                             "value": "[listKeys(variables('visualizerStorageAccount'), '2019-04-01').keys[0].value]"
-                        },
-                        {
-                            "name": "FUNCTIONS_EXTENSION_VERSION",
-                            "value": "~4"
-                        },
-                        {
-                            "name": "FUNCTIONS_WORKER_RUNTIME",
-                            "value": "node"
                         }
                     ]
                 },
@@ -344,6 +336,27 @@
                         {
                             "name": "TA_FHIR_STRUCTURING_RESOURCE_NAME",
                             "value": "[parameters('textAnalyticsForHealthServiceName')]"
+                        },
+                        {
+                            "name": "FUNCTIONS_EXTENSION_VERSION",
+                            "value": "~4"
+                        },
+                        {
+                            "name": "FUNCTIONS_WORKER_RUNTIME",
+                            "value": "node"
+                        },
+                        {
+                            "name": "WEBSITE_MOUNT_ENABLED",
+                            "value": "1"
+
+                        },
+                        {
+                            "name": "WEBSITE_RUN_FROM_PACKAGE",
+                            "value": "[parameters('functionPackageUrl')]"
+                        },
+                        {
+                            "name": "AzureWebJobsStorage",
+                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', parameters('clinicalDocumentsStorageName'), ';AccountKey=', listKeys(variables('visualizerStorageAccount'), '2019-04-01').keys[0].value,';EndpointSuffix=core.windows.net')]"
                         }
                     ],
                     "numberOfWorkers": 1,
@@ -363,20 +376,7 @@
                 "httpsOnly": false,
                 "redundancyMode": "None",
                 "storageAccountRequired": false
-            },
-            "resources": [
-                {
-                    "type": "Extensions",
-                    "apiVersion": "2020-12-01",
-                    "name": "MSDeploy",
-                    "dependsOn": [
-                        "[resourceId('Microsoft.Web/sites', parameters('visualizerFunctionAppName'))]"
-                    ],
-                    "properties": {
-                        "packageUri": "[parameters('functionPackageUrl')]"
-                    }
-                }
-            ]
+            }
         },
         {
             "type": "Microsoft.Web/sites",
