@@ -92,7 +92,7 @@
                 "description": "The URL for the GitHub repository that contains the project to deploy."
             }
         },
-        "repoUrlFunction": {
+        "functionPackageUrl": {
             "type": "string",
             "defaultValue": "https://github.com/microsoft/Health-AI-Blueprints-TA4HVisualizer/tree/main/azure_functions/azure_functions.zip",
             "metadata": {
@@ -366,9 +366,7 @@
                         "[resourceId('Microsoft.Web/sites', parameters('visualizerFunctionAppName'))]"
                     ],
                     "properties": {
-                        "repoUrl": "[parameters('repoUrlFunction')]",
-                        "branch": "[parameters('branch')]",
-                        "isManualIntegration": true
+                        "packageUri": "[parameters('functionPackageUrl')]"
                     }
                 }
             ]
