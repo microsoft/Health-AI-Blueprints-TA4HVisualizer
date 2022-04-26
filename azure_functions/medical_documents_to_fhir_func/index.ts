@@ -16,7 +16,7 @@ const blobTrigger: AzureFunction = async function (context: Context, myBlob: any
         isAutoLanguageDetectionEnabled: false
     }));
 
-    const structuringEndpoint = process.env.TA_FHIR_STRUCTURING_ENDPOINT;
+    const structuringEndpoint = process.env.TA_FHIR_STRUCTURING_ENDPOINT + '/language/analyze-text/jobs?api-version=2022-04-01-preview';
     const config = {
         headers: { 'content-Type': 'application/json' },
         params:  { structureFHIR: true }
