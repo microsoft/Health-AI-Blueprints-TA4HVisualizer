@@ -85,7 +85,7 @@
                 "description": "Describes plan's pricing tier"
             }
         },
-        "repoUrl": {
+        "repoURL": {
             "type": "string",
             "defaultValue": "https://github.com/microsoft/Health-AI-Blueprints-TA4HVisualizer.git",
             "metadata": {
@@ -278,6 +278,18 @@
                         {
                             "name": "STORAGE_ACCOUNT_NAME",
                             "value": "[parameters('clinicalDocumentsStorageName')]"
+                        },
+                        {
+                            "name": "STORAGE_KEY",
+                            "value": "[listKeys(variables('visualizerStorageAccount'), '2019-04-01').keys[0].value]"
+                        },
+                        {
+                            "name": "FUNCTIONS_EXTENSION_VERSION",
+                            "value": "~4"
+                        },
+                        {
+                            "name": "FUNCTIONS_WORKER_RUNTIME",
+                            "value": "node"
                         },
                         {
                             "name": "STORAGE_KEY",

@@ -21,7 +21,7 @@ Utilize the Visualizer tool to extract insights from unstructured medical text. 
 
 ### Steps at high level:
 **1. Deploy "Green path" pipeline (step 1):**<br>
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fpazinio%2FHealth-AI-Blueprints-TA4HVisualizer%2Fmain%2Fazuredeploy.json)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2FHealth-AI-Blueprints-TA4HVisualizer%2Fmain%2Fazuredeploy.json)
 <br>(Deploys required Azure Resources: Web App, Storage Account, Function App, Text Analytics for Health and Health Data Services)<br>
 
 **2. Complete "Green path" pipeline (step 2)**:<br>
