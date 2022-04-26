@@ -290,10 +290,6 @@
                         {
                             "name": "FUNCTIONS_WORKER_RUNTIME",
                             "value": "node"
-                        },
-                        {
-                            "name": "STORAGE_KEY",
-                            "value": "[listKeys(variables('visualizerStorageAccount'), '2019-04-01').keys[0].value]"
                         }
                     ]
                 },
