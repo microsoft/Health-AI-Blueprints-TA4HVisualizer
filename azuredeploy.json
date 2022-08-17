@@ -58,7 +58,7 @@
                 "B1",
                 "S1",
                 "P1V2",
-                "P2V2",
+                "P2V2"
             ],
             "metadata": {
                 "description": "Describes plan's pricing tier and instance size. Check details at https://azure.microsoft.com/en-us/pricing/details/app-service/"
@@ -336,13 +336,11 @@
                         },
                         {
                             "name": "TA_API_VERSION",
-                            "value": "2022-07-01-preview",
-                            "slotSetting": false
+                            "value": "2022-07-01-preview"
                         },
                           {
                             "name": "TA_FHIR_API_VERSION",
-                            "value": "4.0.1",
-                            "slotSetting": false
+                            "value": "4.0.1"
                           },
                         {
                             "name": "TA_FHIR_STRUCTURING_RESOURCE_NAME",
