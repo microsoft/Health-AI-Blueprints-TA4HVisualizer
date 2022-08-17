@@ -53,11 +53,12 @@
         },
         "webappSku": {
             "type": "string",
-            "defaultValue": "P1V2",
+            "defaultValue": "P2V2",
             "allowedValues": [
                 "B1",
                 "S1",
-                "P1V2"
+                "P1V2",
+                "P2V2",
             ],
             "metadata": {
                 "description": "Describes plan's pricing tier and instance size. Check details at https://azure.microsoft.com/en-us/pricing/details/app-service/"
@@ -94,7 +95,7 @@
         },
         "functionPackageUrl": {
             "type": "string",
-            "defaultValue": "https://github.com/microsoft/Health-AI-Blueprints-TA4HVisualizer/tree/main/azure_functions/azure_functions.zip",
+            "defaultValue": "https://github.com/microsoft/Health-AI-Blueprints-TA4HVisualizer/tree/main/azure_functions/af_v28.zip",
             "metadata": {
                 "description": "The URL for the GitHub repository that contains the project to deploy."
             }
@@ -334,6 +335,16 @@
                             "value": "[listKeys(variables('textAnalyticsForHealthServiceId'),'2022-03-01').key1]"
                         },
                         {
+                            "name": "TA_API_VERSION",
+                            "value": "2022-07-01-preview",
+                            "slotSetting": false
+                        },
+                          {
+                            "name": "TA_FHIR_API_VERSION",
+                            "value": "4.0.1",
+                            "slotSetting": false
+                          },
+                        {
                             "name": "TA_FHIR_STRUCTURING_RESOURCE_NAME",
                             "value": "[parameters('textAnalyticsForHealthServiceName')]"
                         },
@@ -360,7 +371,6 @@
                         }
                     ],
                     "numberOfWorkers": 1,
-                    "acrUseManagedIdentityCreds": false,
                     "linuxFxVersion": "NODE|14",
                     "alwaysOn": false,
                     "http20Enabled": false,
