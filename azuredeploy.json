@@ -328,7 +328,7 @@
                         },
                         {
                             "name": "fhirimportstorage_STORAGE",
-                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', parameters('fhirDocumentsStorageName'), ';AccountKey=', listKeys(variables('visualizerStorageAccount'), '2019-04-01').keys[0].value,';EndpointSuffix=core.windows.net')]"
+                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', parameters('fhirDocumentsStorageName'), ';AccountKey=', listKeys(variables('fhirStorageAccount'), '2019-04-01').keys[0].value,';EndpointSuffix=core.windows.net')]"
                         },
                         {
                             "name": "TA_API_KEY",
