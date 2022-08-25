@@ -9,6 +9,14 @@
                 "description": "Azure TextAnalytics Service name. Has to be unique."
             }
         },
+        "tenantId": {
+            "type": "String",
+            "defaultValue": "subscription().tenantId",
+            "metadata":{
+                "description": "will be used for determining fhir service authority"
+            }
+        },
+
         "clinicalDocumentsStorageName": {
             "type": "String",
             "defaultValue": "[concat('ta4hstorage', uniqueString(utcNow('F')))]",
@@ -543,7 +551,7 @@
                     "loginServers": []
                 },
                 "authenticationConfiguration": {
-                    "authority": "[concat('https://login.microsoftonline.com/',subscription().tenantId)]",
+                    "authority": "[concat('https://login.microsoftonline.com/',parameters('tenantId'))]",
                     "audience": "https://visualizer-ta4h.fhir.azurehealthcareapis.com",
                     "smartProxyEnabled": false
                 },
