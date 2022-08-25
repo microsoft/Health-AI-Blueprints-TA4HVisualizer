@@ -543,7 +543,7 @@
                     "loginServers": []
                 },
                 "authenticationConfiguration": {
-                    "authority": "https://login.microsoftonline.com/[subscription().tenantId]",
+                    "authority": "[concat('https://login.microsoftonline.com/',subscription().tenantId)]",
                     "audience": "https://visualizer-ta4h.fhir.azurehealthcareapis.com",
                     "smartProxyEnabled": false
                 },
