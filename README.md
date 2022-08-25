@@ -26,27 +26,26 @@ Utilize the Visualizer tool to extract insights from unstructured medical text. 
 
 **2. Complete "Green path" pipeline (step 2)**:<br>
 Before running Armed Template:<br>
-Go to "Azure Active Directory"<br>
-Click App registrations<br>
-Create new registration<br>
-Create new secret and copy its value<br>
-Add "Fhir Contributor" Role for created "App regestration" in "ta4h Fhir Service" resource<br>
+a.Go to "Azure Active Directory"<br>
+b.Click App registrations<br>
+c.Create new registration<br>
+d.Create new secret and copy its value<br>
+e.Add "Fhir Contributor" Role for created "App regestration" in "ta4h Fhir Service" resource<br>
 <br>
-<br>
-Run this <br>
+Run Armed Template <br>
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2Fhealthcare-apis-samples%2Fblob%2Fmain%2Fsrc%2Ftemplates%2Fimporter.json)
 <br>(Deploys required Azure Resources: Web App, Storage Account, Function App, Text Analytics for Health and Health Data Services)<br>
 That will open https://github.com/microsoft/healthcare-apis-samples/blob/main/src/templates/importer.json taken from open source 
 https://github.com/microsoft/healthcare-apis-samples/tree/main/src/FhirImporter
 <br>
-(Imports FHIR JSON files to your FHIR Server)
+(Imports FHIR JSON files to your FHIR Server)<br>
 <br>
-After running Armed Template:<br>
-Go to new created function.<br>
-Open configuration<br>
-Change value of Audience to  https://visualizer-ta4h.fhir.azurehealthcareapis.com<br>
-Change value of AzureWebJobsStorage to a connection string taken from storage "fhirstorageXXX"<br>
-Press Save and wait for approval<br>
+a. After running Armed Template:<br>
+b. Go to new created function.<br>
+c. Open configuration<br>
+d. Change value of Audience to  https://visualizer-ta4h.fhir.azurehealthcareapis.com<br>
+e. Change value of AzureWebJobsStorage to a connection string taken from storage "fhirstorageXXX"<br>
+f. Press Save and wait for approval<br>
 <br>
 **3. "Yellow path" pipeline (optional)**:<br>
 https://github.com/microsoft/FHIR-Analytics-Pipelines/blob/main/FhirToDataLake/docs/Deployment.md
