@@ -42,9 +42,8 @@ https://github.com/microsoft/healthcare-apis-samples/tree/main/src/FhirImporter
 **After running Armed Template:**<br>
 a. Go to new created function.<br>
 b. Open configuration<br>
-c. Change value of Audience to  https://visualizer-ta4h.fhir.azurehealthcareapis.com<br>
-d. Change value of AzureWebJobsStorage to a connection string taken from storage "fhirstorageXXX"<br>
-e. Press Save and wait for approval<br>
+c. Change value of AzureWebJobsStorage to a connection string taken from storage "fhirstorageXXX"<br>
+d. Press Save and wait for approval<br>
 <br>
 ***3. "Yellow path" pipeline (optional)***:<br>
 https://github.com/microsoft/FHIR-Analytics-Pipelines/blob/main/FhirToDataLake/docs/Deployment.md
