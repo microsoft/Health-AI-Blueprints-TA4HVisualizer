@@ -544,6 +544,7 @@
                 },
                 "authenticationConfiguration": {
                     "authority": "[concat('https://login.microsoftonline.com/',subscription().tenantId)]",
+                    "audience": "[concat(parameters('healthDataServicesWorkspace'), '/ta4h')]",
                     "smartProxyEnabled": false
                 },
                 "corsConfiguration": {
