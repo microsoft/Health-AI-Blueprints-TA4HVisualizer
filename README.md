@@ -49,6 +49,7 @@ d. Press Save and wait for approval<br>
 https://github.com/microsoft/FHIR-Analytics-Pipelines/blob/main/FhirToDataLake/docs/Deployment.md
 <br>
 (Moves FHIR server data to Azure Data-Lake to perform analytics and ML)
+Create report using this tutorial: https://docs.microsoft.com/en-us/azure/synapse-analytics/get-started-visualize-power-bi<br>
 ## Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
