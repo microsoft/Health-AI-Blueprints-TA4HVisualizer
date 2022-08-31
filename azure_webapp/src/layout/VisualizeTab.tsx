@@ -6,7 +6,7 @@ const VisualizeTab: React.FC = () => {
         <>
             <Stack horizontal horizontalAlign={"space-between"} verticalAlign={"center"}>
                 <h2>Reportss</h2>
-                <Link href={process.env.REPORT_URL_POWERBI} target={"_blank"}>Open in Power BI</Link>
+                <Link href={process.env.REPORT_URL_POWERBI} target={"_blank"}>Open in Power BII</Link>
             </Stack>
 
             {
