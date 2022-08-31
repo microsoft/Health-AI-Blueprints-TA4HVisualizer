@@ -6,12 +6,12 @@ const VisualizeTab: React.FC = () => {
         <>
             <Stack horizontal horizontalAlign={"space-between"} verticalAlign={"center"}>
                 <h2>Reportss</h2>
-                <Link href={process.env.REPORT_URL_POWERBI} target={"_blank"}>Open in Power BII</Link>
+                <Link href={process.env.REPORT_URL_POWERBI_1} target={"_blank"}>1111Open in Power BII</Link>
             </Stack>
 
             {
             <iframe title="Clinical Insights_FHIR" width="1140" height="541.25"
-                        src=process.env.REPORT_URL
+                        src=process.env.REPORT_URL_1
                         frameBorder="0" allowFullScreen></iframe>
             }
         </>
