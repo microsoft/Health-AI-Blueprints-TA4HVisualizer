@@ -46,10 +46,11 @@ c. Change value of AzureWebJobsStorage to a connection string taken from storage
 d. Press Save and wait for approval<br>
 <br>
 ***3. "Yellow path" pipeline (optional)***:<br>
-https://github.com/microsoft/FHIR-Analytics-Pipelines/blob/main/FhirToDataLake/docs/Deployment.md
+a. https://github.com/microsoft/FHIR-Analytics-Pipelines/blob/main/FhirToDataLake/docs/Deployment.md
 <br>
-(Moves FHIR server data to Azure Data-Lake to perform analytics and ML)
-Create report using this tutorial: https://docs.microsoft.com/en-us/azure/synapse-analytics/get-started-visualize-power-bi<br>
+(Moves FHIR server data to Azure Data-Lake to perform analytics and ML)<br>
+b. Create report using this tutorial: https://docs.microsoft.com/en-us/azure/synapse-analytics/get-started-visualize-power-bi<br>
+<br>
 ## Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
