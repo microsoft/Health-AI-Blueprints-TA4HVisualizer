@@ -34,7 +34,7 @@ d. Create new secret and copy its value<br>
 e. Add "Fhir Contributor" Role for created "App regestration" in "ta4h Fhir Service" resource<br>
 <br>
 **Run Armed Template:**<br>
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2Fhealthcare-apis-samples%2Fblob%2Fmain%2Fsrc%2Ftemplates%2Fimporter.json)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2Fhealthcare-apis-samples%2Fblob%2Fmain%2Fsrc%2Ftemplates%2Fimporter.json)<br>
 That will open https://github.com/microsoft/healthcare-apis-samples/blob/main/src/templates/importer.json taken from open source 
 https://github.com/microsoft/healthcare-apis-samples/tree/main/src/FhirImporter
 <br>
