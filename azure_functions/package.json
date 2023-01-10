@@ -20,6 +20,6 @@
   },
   "dependencies": {
     "@azure/ai-text-analytics": "^5.1.0",
-    "tedious": "^14.0.0"
+    "tedious": "^14.7.0"
   }
 }
